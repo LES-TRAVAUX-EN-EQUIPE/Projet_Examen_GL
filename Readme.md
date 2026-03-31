@@ -1,4 +1,3 @@
-=> STRUCTURE DU PROJET EN GLOBAL
 Projet_Examen_GL/
 │
 ├── README.md
