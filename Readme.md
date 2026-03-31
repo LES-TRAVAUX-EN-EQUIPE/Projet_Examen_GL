@@ -1,4 +1,6 @@
-=> STRUCTURE DU PROJET EN GLOBAL
+## 📁 Structure du projet
+
+```bash
 Projet_Examen_GL/
 │
 ├── README.md
@@ -15,7 +17,6 @@ Projet_Examen_GL/
 │   ├── plan_de_test.md
 │   ├── manuel_utilisateur.md
 │   ├── preuves_travail_equipe.md
-│   │
 │   └── uml/
 │       ├── diagramme_cas_utilisation.png
 │       ├── diagramme_classes.png
@@ -33,105 +34,20 @@ Projet_Examen_GL/
 ├── backend/
 │   ├── config/
 │   │   └── connexion.php
-│   │
 │   ├── controleurs/
-│   │   ├── AuthentificationControleur.php
-│   │   ├── UtilisateurControleur.php
-│   │   ├── FournisseurControleur.php
-│   │   ├── CarburantControleur.php
-│   │   ├── DepotControleur.php
-│   │   ├── StationControleur.php
-│   │   ├── VehiculeControleur.php
-│   │   ├── ApprovisionnementControleur.php
-│   │   ├── LivraisonControleur.php
-│   │   ├── MouvementStockControleur.php
-│   │   ├── AlerteControleur.php
-│   │   └── RapportControleur.php
-│   │
 │   ├── modeles/
-│   │   ├── Utilisateur.php
-│   │   ├── Fournisseur.php
-│   │   ├── TypeCarburant.php
-│   │   ├── Depot.php
-│   │   ├── Station.php
-│   │   ├── Vehicule.php
-│   │   ├── Approvisionnement.php
-│   │   ├── Livraison.php
-│   │   ├── MouvementStock.php
-│   │   └── Alerte.php
-│   │
 │   ├── routes/
-│   │   └── api.php
-│   │
 │   ├── middleware/
-│   │   └── AuthMiddleware.php
-│   │
 │   ├── utilitaires/
-│   │   ├── reponse_json.php
-│   │   ├── validation.php
-│   │   └── fonctions.php
-│   │
-│   ├── tests/
-│   │   ├── test_connexion.php
-│   │   ├── test_utilisateur.php
-│   │   ├── test_fournisseur.php
-│   │   ├── test_approvisionnement.php
-│   │   └── test_livraison.php
-│   │
 │   └── public/
-│       └── index.php
 │
 ├── frontend/
-│   ├── index.html
-│   │
+│   ├── composants/
 │   ├── pages/
-│   │   ├── connexion.html
-│   │   ├── tableau_de_bord.html
-│   │   ├── utilisateurs.html
-│   │   ├── fournisseurs.html
-│   │   ├── types_carburant.html
-│   │   ├── depots.html
-│   │   ├── stations.html
-│   │   ├── vehicules.html
-│   │   ├── approvisionnements.html
-│   │   ├── livraisons.html
-│   │   ├── mouvements_stock.html
-│   │   ├── alertes.html
-│   │   └── rapports.html
-│   │
 │   ├── ressources/
 │   │   ├── css/
-│   │   │   ├── style.css
-│   │   │   ├── accueil.css
-│   │   │   ├── connexion.css
-│   │   │   ├── tableau_de_bord.css
-│   │   │   ├── formulaires.css
-│   │   │   └── tableaux.css
-│   │   │
 │   │   ├── js/
-│   │   │   ├── main.js
-│   │   │   ├── connexion.js
-│   │   │   ├── tableau_de_bord.js
-│   │   │   ├── fournisseurs.js
-│   │   │   ├── depots.js
-│   │   │   ├── stations.js
-│   │   │   ├── approvisionnements.js
-│   │   │   ├── livraisons.js
-│   │   │   ├── alertes.js
-│   │   │   └── rapports.js
-│   │   │
 │   │   └── images/
-│   │       ├── logo.png
-│   │       ├── banniere.jpg
-│   │       └── captures/
-│   │
-│   └── composants/
-│       ├── entete.html
-│       ├── barre_laterale.html
-│       └── pied_de_page.html
+│   └── index.html
 │
 └── captures_projet/
-    ├── capture_accueil.png
-    ├── capture_connexion.png
-    ├── capture_tableau_bord.png
-    └── capture_mysql.png
