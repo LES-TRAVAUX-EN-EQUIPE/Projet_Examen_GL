@@ -15,7 +15,7 @@ INSERT INTO roles (nom_role, description_role) VALUES
 -- =========================
 INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, telephone, role_id, statut) VALUES
 ('Bujiriri', 'Thibaut', 'thibaut@fueltrack.com', '$2y$10$examplehashadmin', '0990000001', 1, 'actif'),
-('Kasereka', 'samy', 'samy@fueltrack.com', '$2y$10$examplehashstock', '0990000002', 2, 'actif'),
+('Amani', 'Samy', 'samy@fueltrack.com', '$2y$10$examplehashstock', '0990000002', 2, 'actif'),
 ('Mumbere', 'amina', 'amina@fueltrack.com', '$2y$10$examplehashlog', '0990000003', 3, 'actif'),
 ('Bahati', 'marie', 'marie@fueltrack.com', '$2y$10$examplehashstation', '0990000004', 4, 'actif'),
 ('Kambale', 'justin', 'justin@fueltrack.com', '$2y$10$examplehashsup', '0990000005', 5, 'actif');
