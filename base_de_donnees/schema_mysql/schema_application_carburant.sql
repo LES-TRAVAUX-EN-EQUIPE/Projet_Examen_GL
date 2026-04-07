@@ -118,7 +118,7 @@ CREATE TABLE vehicules (
 );
 
 -- =========================
--- TABLE : approvisionnements
+-- TABLE : approvisionnements (A CORRIGER)
 -- =========================
 CREATE TABLE approvisionnements (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -236,7 +236,7 @@ CREATE TABLE stocks_stations (
 );
 
 -- =========================
--- TABLE : mouvements_stock
+-- TABLE : mouvements_stock (A VERIFIER)
 -- =========================
 CREATE TABLE mouvements_stock (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -314,7 +314,7 @@ CREATE TABLE alertes (
 -- =========================
 -- INDEXES SUPPLEMENTAIRES
 -- =========================
-CREATE INDEX idx_appro_date ON approvisionnements(date_approvisionnement);
+CREATE INDEX idx_appro_date ON approvisionnements(date_approvisionnement); -- A REFAIR
 CREATE INDEX idx_livraison_date_depart ON livraisons(date_depart);
-CREATE INDEX idx_mouvement_date ON mouvements_stock(date_mouvement);
+CREATE INDEX idx_mouvement_date ON mouvements_stock(date_mouvement); -- A REVOIR
 CREATE INDEX idx_alerte_date ON alertes(date_alerte);
