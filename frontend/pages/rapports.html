@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapports - FuelTrack</title>
+  <link rel="stylesheet" href="../ressources/css/style.css">
+  <link rel="stylesheet" href="../ressources/css/tableaux.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2 class="brand">FuelTrack</h2>
+      <a class="nav-link" href="tableau_de_bord.html">Tableau de bord</a>
+<a class="nav-link" href="utilisateurs.html">Utilisateurs</a>
+<a class="nav-link" href="fournisseurs.html">Fournisseurs</a>
+<a class="nav-link" href="depots.html">Dépôts</a>
+<a class="nav-link" href="stations.html">Stations</a>
+<a class="nav-link" href="vehicules.html">Véhicules</a>
+<a class="nav-link" href="types_carburant.html">Types carburant</a>
+<a class="nav-link" href="approvisionnements.html">Approvisionnements</a>
+<a class="nav-link" href="livraisons.html">Livraisons</a>
+<a class="nav-link" href="mouvements_stock.html">Mouvements stock</a>
+<a class="nav-link" href="alertes.html">Alertes</a>
+<a class="nav-link active" href="rapports.html">Rapports</a>
+</aside>
+    <main class="content">
+      <h1>Rapports</h1>
+      <section class="card" style="margin-bottom: 16px;">
+        <h2>Approvisionnements par carburant</h2>
+        <div class="table-wrap"><table><thead><tr><th>Carburant</th><th>Volume total</th><th>Montant total</th></tr></thead><tbody id="appro-body"></tbody></table></div>
+      </section>
+      <section class="card" style="margin-bottom: 16px;">
+        <h2>Livraisons par statut</h2>
+        <div class="table-wrap"><table><thead><tr><th>Statut</th><th>Total</th><th>Volume</th></tr></thead><tbody id="livr-body"></tbody></table></div>
+      </section>
+      <section class="card">
+        <h2>Alertes par niveau</h2>
+        <div class="table-wrap"><table><thead><tr><th>Niveau</th><th>Total</th></tr></thead><tbody id="alerte-body"></tbody></table></div>
+      </section>
+    </main>
+  </div>
+  <script type="module" src="../ressources/js/auth_guard.js"></script>
+  <script type="module" src="../ressources/js/rapports.js"></script>
+</body>
+</html>
+
+
+
+
+
+

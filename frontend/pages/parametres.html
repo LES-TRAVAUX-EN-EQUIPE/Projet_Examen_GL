@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres - FuelTrack</title>
+  <link rel="stylesheet" href="../ressources/css/style.css">
+  <link rel="stylesheet" href="../ressources/css/formulaires.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2 class="brand">FuelTrack</h2>
+      <a class="nav-link" href="tableau_de_bord.html">Tableau de bord</a>
+    </aside>
+
+    <main class="content">
+      <div class="page-header">
+        <div>
+          <h1>Paramètres</h1>
+          <p class="settings-subtitle">Pilotage global du dashboard, des analytics et de la maintenance.</p>
+        </div>
+      </div>
+
+      <section class="settings-grid" style="margin-bottom: 14px;">
+        <article class="card settings-card">
+          <h2>Contrôle du dashboard</h2>
+          <div class="settings-list" id="dashboard-controls"></div>
+        </article>
+
+        <article class="card settings-card">
+          <h2>Analytics et maintenance</h2>
+          <form id="preferences-form">
+            <div class="settings-row settings-input-row">
+              <div>
+                <h3>Plage d'analyse</h3>
+                <p>Contrôle les données prises en compte dans les graphiques temporels.</p>
+              </div>
+              <select id="pref-analyse" name="analyse_periode">
+                <option value="all">Toutes les années</option>
+                <option value="12m">12 derniers mois</option>
+                <option value="6m">6 derniers mois</option>
+              </select>
+            </div>
+
+            <div class="settings-list" id="analytics-toggles"></div>
+
+            <div class="settings-actions-grid">
+              <button class="btn btn-secondary" type="button" id="btn-refresh-data">Rafraîchir les données</button>
+              <button class="btn btn-secondary" type="button" id="btn-reset-dashboard">Réinitialiser les paramètres dashboard</button>
+            </div>
+
+            <button class="btn btn-danger settings-danger-btn" type="button" id="btn-reset-local">Réinitialiser les données locales</button>
+            <p id="preferences-notice" class="notice"></p>
+          </form>
+        </article>
+      </section>
+
+      <section class="settings-grid">
+        <article class="card settings-card">
+          <h2>Profil utilisateur</h2>
+          <form id="profil-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="param-nom">Nom</label>
+                <input type="text" id="param-nom" name="nom" required>
+              </div>
+              <div class="form-group">
+                <label for="param-prenom">Prénom</label>
+                <input type="text" id="param-prenom" name="prenom" required>
+              </div>
+              <div class="form-group">
+                <label for="param-email">Email</label>
+                <input type="email" id="param-email" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="param-telephone">Téléphone</label>
+                <input type="text" id="param-telephone" name="telephone">
+              </div>
+              <div class="form-group">
+                <label for="param-role">Rôle</label>
+                <input type="text" id="param-role" disabled>
+              </div>
+              <div class="form-group">
+                <label for="param-statut">Statut</label>
+                <input type="text" id="param-statut" disabled>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Enregistrer le profil</button>
+            </div>
+            <p id="profil-notice" class="notice"></p>
+          </form>
+        </article>
+
+        <article class="card settings-card">
+          <h2>Sécurité</h2>
+          <form id="password-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="pwd-current">Mot de passe actuel</label>
+                <input type="password" id="pwd-current" name="mot_de_passe_actuel" autocomplete="current-password" required>
+              </div>
+              <div class="form-group">
+                <label for="pwd-new">Nouveau mot de passe</label>
+                <input type="password" id="pwd-new" name="mot_de_passe_nouveau" minlength="6" autocomplete="new-password" required>
+              </div>
+              <div class="form-group">
+                <label for="pwd-confirm">Confirmer le nouveau mot de passe</label>
+                <input type="password" id="pwd-confirm" name="mot_de_passe_confirm" minlength="6" autocomplete="new-password" required>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Mettre à jour le mot de passe</button>
+            </div>
+            <p id="password-notice" class="notice"></p>
+          </form>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="../ressources/js/auth_guard.js"></script>
+  <script type="module" src="../ressources/js/parametres.js"></script>
+</body>
+</html>

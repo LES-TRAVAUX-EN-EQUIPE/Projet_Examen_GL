@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord - FuelTrack</title>
+  <link rel="stylesheet" href="../ressources/css/style.css">
+  <link rel="stylesheet" href="../ressources/css/tableaux.css">
+  <link rel="stylesheet" href="../ressources/css/tableau_de_bord.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2 class="brand">FuelTrack</h2>
+      <a class="nav-link active" href="tableau_de_bord.html">Tableau de bord</a>
+<a class="nav-link" href="utilisateurs.html">Utilisateurs</a>
+<a class="nav-link" href="fournisseurs.html">Fournisseurs</a>
+<a class="nav-link" href="depots.html">Dépôts</a>
+<a class="nav-link" href="stations.html">Stations</a>
+<a class="nav-link" href="vehicules.html">Véhicules</a>
+<a class="nav-link" href="types_carburant.html">Types carburant</a>
+<a class="nav-link" href="approvisionnements.html">Approvisionnements</a>
+<a class="nav-link" href="livraisons.html">Livraisons</a>
+<a class="nav-link" href="mouvements_stock.html">Mouvements stock</a>
+<a class="nav-link" href="alertes.html">Alertes</a>
+<a class="nav-link" href="rapports.html">Rapports</a>
+<a class="nav-link" href="parametres.html">Paramètres</a>
+    </aside>
+
+    <main class="content">
+      <h1>Tableau de bord</h1>
+      <section id="panel-kpi" class="metrics"></section>
+
+      <section class="chart-row">
+        <article class="card chart-card" id="panel-chart-stocks">
+          <h2>Répartition des stocks faibles</h2>
+          <canvas id="chart-stocks"></canvas>
+        </article>
+        <article class="card chart-card" id="panel-chart-livraisons">
+          <h2>Livraisons par statut</h2>
+          <canvas id="chart-livraisons"></canvas>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="card chart-card" id="panel-chart-alertes">
+          <h2>Alertes par niveau</h2>
+          <canvas id="chart-alertes"></canvas>
+        </article>
+        <article class="card chart-card" id="panel-chart-appro">
+          <h2>Volumes approvisionnés</h2>
+          <canvas id="chart-appro"></canvas>
+        </article>
+      </section>
+
+      <section class="card" style="margin-bottom: 14px;" id="panel-table-stocks">
+        <h2>Stocks dépôts (plus faibles)</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Dépôt</th><th>Carburant</th><th>Quantité</th><th>Seuil</th></tr></thead>
+            <tbody id="stocks-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card" id="panel-table-livraisons" style="margin-bottom: 14px;">
+        <h2>Livraisons récentes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Référence</th><th>Dépôt</th><th>Station</th><th>Quantité</th><th>Statut</th></tr></thead>
+            <tbody id="livraisons-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="card" id="panel-profile-card">
+          <h2>Profil actuel</h2>
+          <div id="profile-card-body"></div>
+        </article>
+        <article class="card" id="panel-publications-card">
+          <h2>Derniers indicateurs</h2>
+          <ul id="publications-card-body" style="margin:0;padding-left:16px;"></ul>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="../ressources/js/auth_guard.js"></script>
+  <script type="module" src="../ressources/js/tableau_de_bord.js"></script>
+</body>
+</html>

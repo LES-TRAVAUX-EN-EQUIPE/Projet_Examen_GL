@@ -1,4 +1,6 @@
-﻿:root {
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap');
+
+:root {
   --bg-main: #f4f7fb;
   --bg-dark: #133c84;
   --bg-dark-soft: #0f2f67;
@@ -23,7 +25,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Nunito Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-dark);
   background: linear-gradient(180deg, #315aa3 0%, #f4f7fb 34%);
   line-height: 1.6;
@@ -848,3 +850,4 @@ a {
     gap: 20px;
   }
 }
+

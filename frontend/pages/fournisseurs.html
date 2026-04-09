@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des fournisseurs - FuelTrack</title>
+  <link rel="stylesheet" href="../ressources/css/style.css">
+  <link rel="stylesheet" href="../ressources/css/formulaires.css">
+  <link rel="stylesheet" href="../ressources/css/tableaux.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2 class="brand">FuelTrack</h2>
+      <a class="nav-link" href="tableau_de_bord.html">Tableau de bord</a>
+<a class="nav-link" href="utilisateurs.html">Utilisateurs</a>
+<a class="nav-link active" href="fournisseurs.html">Fournisseurs</a>
+<a class="nav-link" href="depots.html">Dépôts</a>
+<a class="nav-link" href="stations.html">Stations</a>
+<a class="nav-link" href="vehicules.html">Véhicules</a>
+<a class="nav-link" href="types_carburant.html">Types carburant</a>
+<a class="nav-link" href="approvisionnements.html">Approvisionnements</a>
+<a class="nav-link" href="livraisons.html">Livraisons</a>
+<a class="nav-link" href="mouvements_stock.html">Mouvements stock</a>
+<a class="nav-link" href="alertes.html">Alertes</a>
+<a class="nav-link" href="rapports.html">Rapports</a>
+</aside>
+
+    <main class="content">
+      <div class="page-header">
+        <h1>Gestion des fournisseurs</h1>
+      </div>
+
+      <section class="card">
+        <form id="crud-form">
+          <div id="form-body" class="form-grid"></div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+            <button class="btn btn-secondary" id="btn-reset" type="button">Réinitialiser</button>
+          </div>
+          <p id="notice" class="notice"></p>
+        </form>
+      </section>
+
+      <section class="card" style="margin-top: 16px;">
+        <div class="table-wrap">
+          <table>
+            <thead id="table-head"></thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="../ressources/js/auth_guard.js"></script>
+  <script type="module" src="../ressources/js/fournisseurs.js"></script>
+</body>
+</html>
+
+
+
+
+
+
