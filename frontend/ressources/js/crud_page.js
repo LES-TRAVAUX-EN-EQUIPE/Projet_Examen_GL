@@ -7,6 +7,7 @@ export async function initialiserPageCrud(config) {
   const tableBody = document.getElementById('table-body');
   const notice = document.getElementById('notice');
   const formCard = form ? form.closest('.card') : null;
+  const pageHeader = document.querySelector('.page-header');
 
   const auth = window.FUELTRACK_AUTH || null;
   const canWrite = auth ? auth.peutEcrire(config.entity) : true;
@@ -18,6 +19,16 @@ export async function initialiserPageCrud(config) {
 
   let modalOverlay = null;
   let modalTitle = null;
+  let confirmOverlay = null;
+  let confirmResolve = null;
+  let noticeTimeoutId = null;
+
+  const pageNotice = document.createElement('p');
+  pageNotice.className = 'notice-banner';
+
+  if (pageHeader && pageHeader.parentNode) {
+    pageHeader.insertAdjacentElement('afterend', pageNotice);
+  }
 
   const labelsParEntite = {
     utilisateurs: 'utilisateur',
@@ -32,6 +43,45 @@ export async function initialiserPageCrud(config) {
     alertes: 'alerte',
   };
 
+  function afficherNotice(message, type = 'success') {
+    if (noticeTimeoutId) {
+      clearTimeout(noticeTimeoutId);
+      noticeTimeoutId = null;
+    }
+
+    if (notice) {
+      notice.textContent = message;
+      notice.className = `notice ${type}`;
+    }
+
+    pageNotice.textContent = message;
+    pageNotice.className = `notice-banner visible ${type}`;
+
+    if (type === 'success') {
+      noticeTimeoutId = window.setTimeout(() => {
+        if (notice) {
+          notice.textContent = '';
+          notice.className = 'notice';
+        }
+        pageNotice.textContent = '';
+        pageNotice.className = 'notice-banner';
+      }, 3500);
+    }
+  }
+
+  function effacerNotice() {
+    if (noticeTimeoutId) {
+      clearTimeout(noticeTimeoutId);
+      noticeTimeoutId = null;
+    }
+    if (notice) {
+      notice.textContent = '';
+      notice.className = 'notice';
+    }
+    pageNotice.textContent = '';
+    pageNotice.className = 'notice-banner';
+  }
+
   function ouvrirModal(titre) {
     if (!modalOverlay) return;
     modalTitle.textContent = titre;
@@ -42,13 +92,72 @@ export async function initialiserPageCrud(config) {
   function fermerModal() {
     if (!modalOverlay) return;
     modalOverlay.classList.remove('open');
-    document.body.classList.remove('modal-open');
+    if (!confirmOverlay || !confirmOverlay.classList.contains('open')) {
+      document.body.classList.remove('modal-open');
+    }
+  }
+
+  function ouvrirConfirmation(message) {
+    if (!confirmOverlay) {
+      return Promise.resolve(window.confirm(message));
+    }
+
+    const confirmMessage = confirmOverlay.querySelector('.confirm-message');
+    confirmMessage.textContent = message;
+    confirmOverlay.classList.add('open');
+    document.body.classList.add('modal-open');
+
+    return new Promise((resolve) => {
+      confirmResolve = resolve;
+    });
+  }
+
+  function fermerConfirmation(resultat = false) {
+    if (!confirmOverlay) return;
+    confirmOverlay.classList.remove('open');
+    if (!modalOverlay || !modalOverlay.classList.contains('open')) {
+      document.body.classList.remove('modal-open');
+    }
+
+    if (confirmResolve) {
+      const resolve = confirmResolve;
+      confirmResolve = null;
+      resolve(resultat);
+    }
+  }
+
+  function initialiserBoiteConfirmation() {
+    confirmOverlay = document.createElement('div');
+    confirmOverlay.className = 'confirm-overlay';
+    confirmOverlay.innerHTML = `
+      <div class="confirm-box" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <div class="confirm-icon"><i class="bi bi-trash3"></i></div>
+        <h3 id="confirm-title" class="confirm-title">Confirmer la suppression</h3>
+        <p class="confirm-message"></p>
+        <div class="confirm-actions">
+          <button type="button" class="btn btn-secondary confirm-cancel">Annuler</button>
+          <button type="button" class="btn btn-danger confirm-accept">Supprimer</button>
+        </div>
+      </div>
+    `;
+
+    const cancelBtn = confirmOverlay.querySelector('.confirm-cancel');
+    const acceptBtn = confirmOverlay.querySelector('.confirm-accept');
+
+    cancelBtn.addEventListener('click', () => fermerConfirmation(false));
+    acceptBtn.addEventListener('click', () => fermerConfirmation(true));
+    confirmOverlay.addEventListener('click', (event) => {
+      if (event.target === confirmOverlay) {
+        fermerConfirmation(false);
+      }
+    });
+
+    document.body.appendChild(confirmOverlay);
   }
 
   function initialiserModalSiBesoin() {
     if (creationMode !== 'modal' || !canWrite || !formCard) return;
 
-    const pageHeader = document.querySelector('.page-header');
     if (pageHeader) {
       const addBtn = document.createElement('button');
       addBtn.type = 'button';
@@ -58,7 +167,7 @@ export async function initialiserPageCrud(config) {
       addBtn.addEventListener('click', () => {
         elementEdition = null;
         form.reset();
-        notice.textContent = '';
+        effacerNotice();
         ouvrirModal(config.createModalTitle || `Ajouter ${nom}`);
       });
       pageHeader.appendChild(addBtn);
@@ -92,7 +201,9 @@ export async function initialiserPageCrud(config) {
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && modalOverlay.classList.contains('open')) {
+      if (event.key === 'Escape' && confirmOverlay && confirmOverlay.classList.contains('open')) {
+        fermerConfirmation(false);
+      } else if (event.key === 'Escape' && modalOverlay.classList.contains('open')) {
         fermerModal();
       }
     });
@@ -166,8 +277,7 @@ export async function initialiserPageCrud(config) {
     }
 
     if (!canWrite) {
-      notice.textContent = 'Accès limité: ce module est en lecture seule pour votre rôle.';
-      notice.className = 'notice info';
+      afficherNotice('Accès limité: ce module est en lecture seule pour votre rôle.', 'info');
     }
   }
 
@@ -236,15 +346,14 @@ export async function initialiserPageCrud(config) {
         btnDelete.className = 'btn btn-danger';
         btnDelete.textContent = 'Supprimer';
         btnDelete.addEventListener('click', async () => {
-          if (!confirm('Confirmer la suppression ?')) return;
+          const confirme = await ouvrirConfirmation('Cette action supprimera définitivement cet élément. Voulez-vous continuer ?');
+          if (!confirme) return;
           try {
             await apiRequete(config.entity, 'DELETE', null, { id: item.id });
-            notice.textContent = 'Suppression réussie.';
-            notice.className = 'notice';
+            afficherNotice('Suppression effectuée avec succès.', 'success');
             await chargerDonnees();
           } catch (error) {
-            notice.textContent = error.message;
-            notice.className = 'notice error';
+            afficherNotice(error.message, 'error');
           }
         });
 
@@ -275,13 +384,12 @@ export async function initialiserPageCrud(config) {
     try {
       if (elementEdition) {
         await apiRequete(config.entity, 'PUT', payload, { id: elementEdition.id });
-        notice.textContent = 'Mise à jour réussie.';
+        afficherNotice('Modification effectuée avec succès.', 'success');
       } else {
         await apiRequete(config.entity, 'POST', payload);
-        notice.textContent = 'Création réussie.';
+        afficherNotice('Ajout effectué avec succès.', 'success');
       }
 
-      notice.className = 'notice';
       form.reset();
       elementEdition = null;
       await chargerDonnees();
@@ -290,8 +398,7 @@ export async function initialiserPageCrud(config) {
         fermerModal();
       }
     } catch (error) {
-      notice.textContent = error.message;
-      notice.className = 'notice error';
+      afficherNotice(error.message, 'error');
     }
   });
 
@@ -299,7 +406,7 @@ export async function initialiserPageCrud(config) {
   btnReset.addEventListener('click', () => {
     elementEdition = null;
     form.reset();
-    if (canWrite) notice.textContent = '';
+    if (canWrite) effacerNotice();
     if (creationMode === 'modal') fermerModal();
   });
 
@@ -311,6 +418,7 @@ export async function initialiserPageCrud(config) {
 
   await chargerLookups();
   renderForm();
+  initialiserBoiteConfirmation();
   initialiserModalSiBesoin();
   await chargerDonnees();
 }
