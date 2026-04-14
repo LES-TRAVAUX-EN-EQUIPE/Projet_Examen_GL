@@ -34,10 +34,6 @@ form.addEventListener('submit', async (event) => {
 
   try {
     const utilisateur = await apiRequete('auth', 'POST', payload);
-    if (Number(utilisateur.role_id) !== 1) {
-      sessionStorage.removeItem('fueltrack_user');
-      throw new Error('Accès refusé: cet espace est réservé aux administrateurs.');
-    }
     sessionStorage.setItem('fueltrack_user', JSON.stringify(utilisateur));
     message.textContent = 'Connexion réussie. Redirection...';
     message.className = 'message';
