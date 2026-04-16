@@ -104,7 +104,7 @@ INSERT INTO livraisons (
 -- INSERTION DES STOCKS DEPOTS
 -- =========================
 INSERT INTO stocks_depots (depot_id, type_carburant_id, quantite_disponible, seuil_alerte) VALUES
-(1, 1, 68000.00, 10000.00),
+(1, 1, 80000.00, 10000.00),
 (1, 2, 105000.00, 15000.00),
 (1, 3, 0.00, 5000.00),
 (2, 1, 0.00, 5000.00),
@@ -119,9 +119,7 @@ INSERT INTO stocks_depots (depot_id, type_carburant_id, quantite_disponible, seu
 -- =========================
 INSERT INTO stocks_stations (station_id, type_carburant_id, quantite_disponible, seuil_alerte) VALUES
 (1, 2, 15000.00, 3000.00),
-(2, 1, 8000.00, 2500.00),
-(3, 3, 10000.00, 2000.00),
-(4, 2, 5000.00, 2000.00);
+(3, 3, 10000.00, 2000.00);
 
 -- =========================
 -- INSERTION DES MOUVEMENTS DE STOCK
@@ -144,7 +142,6 @@ INSERT INTO mouvements_stock (
 ('MVT-2026-0003', 'entree_depot', 3, 2, NULL, 3, NULL, 50000.00, '2026-03-22 09:20:00', 1, 'Entrée pétrole au dépôt Butembo'),
 ('MVT-2026-0004', 'sortie_depot', 2, 1, NULL, NULL, 1, 15000.00, '2026-03-23 06:05:00', 3, 'Sortie diesel du dépôt vers station Goma Centre'),
 ('MVT-2026-0005', 'entree_station', 2, NULL, 1, NULL, 1, 15000.00, '2026-03-23 11:10:00', 3, 'Entrée diesel station Goma Centre'),
-('MVT-2026-0006', 'sortie_depot', 1, 1, NULL, NULL, 2, 12000.00, '2026-03-24 07:35:00', 3, 'Sortie essence vers Majengo'),
 ('MVT-2026-0007', 'sortie_depot', 3, 2, NULL, NULL, 3, 10000.00, '2026-03-24 08:05:00', 3, 'Sortie pétrole vers Butembo Nord'),
 ('MVT-2026-0008', 'entree_station', 3, NULL, 3, NULL, 3, 10000.00, '2026-03-24 13:10:00', 3, 'Entrée pétrole station Butembo Nord');
 

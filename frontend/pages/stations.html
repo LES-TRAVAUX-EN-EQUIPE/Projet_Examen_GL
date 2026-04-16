@@ -50,6 +50,66 @@
           </table>
         </div>
       </section>
+
+      <section class="settings-grid" style="margin-top: 16px;">
+        <article class="card">
+          <h2>Stock station par produit</h2>
+          <p class="settings-subtitle">Visualisez les quantites disponibles par carburant pour chaque station.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Station</th>
+                  <th>Carburant</th>
+                  <th>Quantite disponible</th>
+                  <th>Seuil alerte</th>
+                </tr>
+              </thead>
+              <tbody id="stocks-stations-body"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card" id="station-stock-adjust-card">
+          <h2>Ajuster un stock produit</h2>
+          <p class="settings-subtitle">Ajoutez ou retirez une quantite sur un produit dans une station avec traçabilité.</p>
+          <form id="stock-station-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="stock-station-id">Station</label>
+                <select id="stock-station-id" name="station_id" required></select>
+              </div>
+              <div class="form-group">
+                <label for="station-type-carburant-id">Carburant</label>
+                <select id="station-type-carburant-id" name="type_carburant_id" required></select>
+              </div>
+              <div class="form-group">
+                <label for="station-operation">Operation</label>
+                <select id="station-operation" name="operation">
+                  <option value="entree">Entree</option>
+                  <option value="sortie">Sortie</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="station-quantite">Quantite</label>
+                <input type="number" id="station-quantite" name="quantite" min="0" step="0.01" required>
+              </div>
+              <div class="form-group">
+                <label for="station-seuil-alerte">Seuil alerte</label>
+                <input type="number" id="station-seuil-alerte" name="seuil_alerte" min="0" step="0.01">
+              </div>
+              <div class="form-group">
+                <label for="station-commentaire">Commentaire</label>
+                <input type="text" id="station-commentaire" name="commentaire">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Enregistrer l'ajustement</button>
+            </div>
+            <p id="stock-station-notice" class="notice"></p>
+          </form>
+        </article>
+      </section>
     </main>
   </div>
 

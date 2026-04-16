@@ -10,15 +10,19 @@ const ROLE_POLICY = {
   1: {
     pages: {
       'tableau_de_bord.html': 'rw',
+      'clients.html': 'rw',
       'utilisateurs.html': 'rw',
       'fournisseurs.html': 'rw',
       'depots.html': 'rw',
       'stations.html': 'rw',
       'vehicules.html': 'rw',
       'types_carburant.html': 'rw',
+      'prix_carburants.html': 'rw',
+      'taux_change_stations.html': 'rw',
       'approvisionnements.html': 'rw',
       'livraisons.html': 'rw',
       'mouvements_stock.html': 'rw',
+      'ventes_station.html': 'rw',
       'alertes.html': 'rw',
       'rapports.html': 'r',
       'parametres.html': 'rw',
@@ -28,11 +32,15 @@ const ROLE_POLICY = {
   2: {
     pages: {
       'tableau_de_bord.html': 'r',
+      'clients.html': 'r',
       'fournisseurs.html': 'rw',
       'depots.html': 'rw',
       'types_carburant.html': 'rw',
+      'prix_carburants.html': 'r',
+      'taux_change_stations.html': 'r',
       'approvisionnements.html': 'rw',
       'mouvements_stock.html': 'rw',
+      'ventes_station.html': 'r',
       'alertes.html': 'rw',
       'rapports.html': 'r',
       'parametres.html': 'rw',
@@ -42,9 +50,13 @@ const ROLE_POLICY = {
   3: {
     pages: {
       'tableau_de_bord.html': 'r',
+      'clients.html': 'r',
       'vehicules.html': 'rw',
       'livraisons.html': 'rw',
       'stations.html': 'r',
+      'prix_carburants.html': 'r',
+      'taux_change_stations.html': 'r',
+      'ventes_station.html': 'r',
       'depots.html': 'r',
       'alertes.html': 'rw',
       'rapports.html': 'r',
@@ -55,17 +67,22 @@ const ROLE_POLICY = {
   4: {
     pages: {
       'tableau_de_bord.html': 'r',
+      'clients.html': 'r',
       'stations.html': 'r',
       'livraisons.html': 'r',
+      'prix_carburants.html': 'r',
+      'taux_change_stations.html': 'rw',
+      'ventes_station.html': 'rw',
       'alertes.html': 'rw',
       'rapports.html': 'r',
       'parametres.html': 'rw',
     },
-    entitiesWrite: ['alertes'],
+    entitiesWrite: ['alertes', 'taux_change_stations', 'ventes_station'],
   },
   5: {
     pages: {
       'tableau_de_bord.html': 'r',
+      'ventes_station.html': 'r',
       'alertes.html': 'r',
       'rapports.html': 'r',
       'parametres.html': 'rw',
@@ -79,6 +96,7 @@ const MENU_GROUPS = [
     title: 'Acteurs',
     icon: 'bi-people-fill',
     items: [
+      { href: 'clients.html', label: 'Clients', icon: 'bi-person-vcard-fill' },
       { href: 'utilisateurs.html', label: 'Utilisateurs', icon: 'bi-people-fill' },
       { href: 'fournisseurs.html', label: 'Fournisseurs', icon: 'bi-building' },
     ],
@@ -100,6 +118,7 @@ const MENU_GROUPS = [
       { href: 'approvisionnements.html', label: 'Approvisionnements', icon: 'bi-box-arrow-in-down' },
       { href: 'livraisons.html', label: 'Livraisons', icon: 'bi-send-check' },
       { href: 'mouvements_stock.html', label: 'Mouvements stock', icon: 'bi-arrow-left-right' },
+      { href: 'ventes_station.html', label: 'Ventes station', icon: 'bi-receipt-cutoff' },
       { href: 'alertes.html', label: 'Alertes', icon: 'bi-exclamation-triangle-fill' },
     ],
   },
@@ -107,6 +126,8 @@ const MENU_GROUPS = [
     title: 'Pilotage',
     icon: 'bi-speedometer2',
     items: [
+      { href: 'prix_carburants.html', label: 'Tarifs station', icon: 'bi-cash-coin' },
+      { href: 'taux_change_stations.html', label: 'Taux de change', icon: 'bi-currency-exchange' },
       { href: 'rapports.html', label: 'Rapports', icon: 'bi-graph-up-arrow' },
       { href: 'parametres.html', label: 'Paramètres', icon: 'bi-gear-fill' },
     ],

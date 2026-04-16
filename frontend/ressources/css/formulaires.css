@@ -259,6 +259,147 @@ body.modal-open {
   font-size: 13px;
 }
 
+.stock-sheet-card h2 {
+  margin-bottom: 4px;
+}
+
+.stock-sheet-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.stock-sheet-subtitle {
+  margin: 0;
+  color: var(--muted);
+}
+
+.stock-sheet-filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stock-sheet-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stock-sheet-metric {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--surface-soft);
+}
+
+.stock-sheet-metric span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.stock-sheet-metric strong {
+  font-size: 20px;
+  color: var(--text);
+}
+
+.sales-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.sales-form-grid {
+  margin-bottom: 16px;
+}
+
+.sales-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sales-preview,
+.muted-block {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  padding: 14px;
+  line-height: 1.6;
+}
+
+.stock-product-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--surface-soft);
+}
+
+.stock-product-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.stock-product-card strong {
+  display: block;
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+@media print {
+  .sidebar,
+  .topbar,
+  .page-header,
+  .card:not(.stock-sheet-card),
+  #stock-sheet-form,
+  #btn-print-stock-sheet {
+    display: none !important;
+  }
+
+  .content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .stock-sheet-card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .sales-layout,
+  .sales-metrics,
+  .stock-sheet-filters,
+  .stock-sheet-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .stock-sheet-header {
+    flex-direction: column;
+  }
+
+  .sales-layout,
+  .sales-metrics,
+  .stock-sheet-filters,
+  .stock-sheet-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
 .settings-row input[type='checkbox'] {
   margin-top: 2px;
   accent-color: #e02424;

@@ -167,6 +167,7 @@ export async function initialiserPageCrud(config) {
       addBtn.addEventListener('click', () => {
         elementEdition = null;
         form.reset();
+        reinitialiserChampsSensibles();
         effacerNotice();
         ouvrirModal(config.createModalTitle || `Ajouter ${nom}`);
       });
@@ -210,10 +211,28 @@ export async function initialiserPageCrud(config) {
   }
 
   async function chargerLookups() {
+    const colonnesAffichees = new Set((config.colonnes || []).map((col) => col.nom));
+
     for (const champ of config.champs) {
       if (champ.type === 'select' && champ.source) {
-        const rows = await apiRequete(champ.source.entity);
-        lookups[champ.nom] = rows;
+        if (!canWrite && !colonnesAffichees.has(champ.nom)) {
+          lookups[champ.nom] = [];
+          continue;
+        }
+
+        try {
+          const rows = await apiRequete(champ.source.entity);
+          lookups[champ.nom] = rows;
+        } catch (error) {
+          lookups[champ.nom] = [];
+
+          if (canWrite) {
+            afficherNotice(
+              `Certaines listes du formulaire n'ont pas pu être chargées: ${error.message}`,
+              'error'
+            );
+          }
+        }
       }
     }
   }
@@ -267,18 +286,30 @@ export async function initialiserPageCrud(config) {
         input.name = champ.nom;
         input.id = champ.nom;
         input.type = champ.type || 'text';
+        if (champ.type === 'number') {
+          input.step = champ.step || '0.01';
+        }
       }
 
       if (champ.required) input.required = true;
-      if (!canWrite) input.disabled = true;
 
       group.appendChild(input);
       formBody.appendChild(group);
     }
+  }
 
-    if (!canWrite) {
-      afficherNotice('Accès limité: ce module est en lecture seule pour votre rôle.', 'info');
+  function reinitialiserChampsSensibles() {
+    for (const champ of config.champs) {
+      const input = form.elements[champ.nom];
+      if (!input || champ.type !== 'password') continue;
+      input.value = '';
+      input.placeholder = '';
     }
+  }
+
+  function masquerFormulaireSiLectureSeule() {
+    if (canWrite || !formCard) return;
+    formCard.remove();
   }
 
   function renderTable() {
@@ -318,7 +349,18 @@ export async function initialiserPageCrud(config) {
         const td = document.createElement('td');
         const champ = config.champs.find((c) => c.nom === col.nom);
         const valeur = item[col.nom];
-        td.textContent = champ ? labelLookup(champ, valeur) : valeur;
+        if (typeof col.render === 'function') {
+          td.textContent = col.render({
+            item,
+            valeur,
+            champ,
+            lookups,
+            labelLookup,
+            config,
+          });
+        } else {
+          td.textContent = champ ? labelLookup(champ, valeur) : valeur;
+        }
         tr.appendChild(td);
       }
 
@@ -334,7 +376,15 @@ export async function initialiserPageCrud(config) {
           elementEdition = item;
           for (const champ of config.champs) {
             const input = form.elements[champ.nom];
-            if (input) input.value = item[champ.nom] ?? '';
+            if (!input) continue;
+
+            if (champ.type === 'password') {
+              input.value = '';
+              input.placeholder = 'Laisser vide pour conserver le mot de passe actuel';
+              continue;
+            }
+
+            input.value = item[champ.nom] ?? '';
           }
           if (creationMode === 'modal') {
             ouvrirModal(config.editModalTitle || 'Modifier');
@@ -369,6 +419,13 @@ export async function initialiserPageCrud(config) {
   async function chargerDonnees() {
     cache = await apiRequete(config.entity);
     renderTable();
+    document.dispatchEvent(new CustomEvent('fueltrack:crud-data-loaded', {
+      detail: {
+        entity: config.entity,
+        rows: cache,
+        canWrite,
+      },
+    }));
   }
 
   form.addEventListener('submit', async (event) => {
@@ -392,6 +449,7 @@ export async function initialiserPageCrud(config) {
 
       form.reset();
       elementEdition = null;
+      reinitialiserChampsSensibles();
       await chargerDonnees();
 
       if (creationMode === 'modal') {
@@ -403,21 +461,22 @@ export async function initialiserPageCrud(config) {
   });
 
   const btnReset = document.getElementById('btn-reset');
-  btnReset.addEventListener('click', () => {
-    elementEdition = null;
-    form.reset();
-    if (canWrite) effacerNotice();
-    if (creationMode === 'modal') fermerModal();
-  });
-
-  if (!canWrite) {
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
-    if (btnReset) btnReset.disabled = true;
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      elementEdition = null;
+      form.reset();
+      reinitialiserChampsSensibles();
+      if (canWrite) effacerNotice();
+      if (creationMode === 'modal') fermerModal();
+    });
   }
 
   await chargerLookups();
-  renderForm();
+  if (canWrite) {
+    renderForm();
+  } else {
+    masquerFormulaireSiLectureSeule();
+  }
   initialiserBoiteConfirmation();
   initialiserModalSiBesoin();
   await chargerDonnees();

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ventes station - FuelTrack</title>
+  <link rel="stylesheet" href="../ressources/css/style.css">
+  <link rel="stylesheet" href="../ressources/css/formulaires.css">
+  <link rel="stylesheet" href="../ressources/css/tableaux.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2 class="brand">FuelTrack</h2>
+    </aside>
+
+    <main class="content">
+      <div class="page-header">
+        <h1>Ventes station</h1>
+      </div>
+
+      <section class="sales-layout">
+        <article class="card">
+          <h2>Nouvelle vente</h2>
+          <form id="vente-form">
+            <datalist id="client-phones"></datalist>
+            <div class="form-grid sales-form-grid">
+              <div class="form-group">
+                <label for="vente-station-id">Station</label>
+                <select id="vente-station-id" name="station_id" required></select>
+              </div>
+              <div class="form-group">
+                <label for="vente-type-carburant-id">Carburant</label>
+                <select id="vente-type-carburant-id" name="type_carburant_id" required></select>
+              </div>
+              <div class="form-group">
+                <label for="vente-telephone-client">Telephone client</label>
+                <input type="text" id="vente-telephone-client" name="telephone_client" list="client-phones" required>
+              </div>
+              <div class="form-group">
+                <label for="vente-nom-client">Nom du client</label>
+                <input type="text" id="vente-nom-client" name="nom_client" required>
+              </div>
+              <div class="form-group">
+                <label for="vente-email-client">Email client</label>
+                <input type="email" id="vente-email-client" name="email_client">
+              </div>
+              <div class="form-group">
+                <label for="vente-adresse-client">Adresse client</label>
+                <input type="text" id="vente-adresse-client" name="adresse_client">
+              </div>
+              <div class="form-group">
+                <label for="vente-quantite">Quantite</label>
+                <input type="number" id="vente-quantite" name="quantite" min="0" step="0.01" required>
+              </div>
+              <div class="form-group">
+                <label for="vente-devise-paiement">Devise paiement</label>
+                <select id="vente-devise-paiement" name="devise_paiement">
+                  <option value="USD">USD</option>
+                  <option value="CDF">CDF</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="vente-reduction">Reduction</label>
+                <input type="number" id="vente-reduction" name="reduction" min="0" step="0.01" value="0">
+              </div>
+              <div class="form-group">
+                <label for="vente-montant-paye">Montant paye</label>
+                <input type="number" id="vente-montant-paye" name="montant_paye" min="0" step="0.01">
+              </div>
+              <div class="form-group">
+                <label for="vente-date">Date vente</label>
+                <input type="datetime-local" id="vente-date" name="date_vente" required>
+              </div>
+              <div class="form-group">
+                <label for="vente-commentaire">Commentaire</label>
+                <input type="text" id="vente-commentaire" name="commentaire">
+              </div>
+            </div>
+
+            <div class="sales-metrics" id="vente-metrics"></div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Enregistrer la vente</button>
+            </div>
+            <p id="vente-notice" class="notice"></p>
+          </form>
+        </article>
+
+        <article class="card">
+          <h2>Client retrouve</h2>
+          <div id="client-preview" class="sales-preview muted-block">Saisissez un numero de telephone pour retrouver automatiquement le client.</div>
+        </article>
+      </section>
+
+      <section class="card" style="margin-top: 16px;">
+        <div class="stock-sheet-header">
+          <div>
+            <h2>Stock station disponible par produit</h2>
+            <p class="stock-sheet-subtitle">Cette zone affiche le stock de la station selectionnee, utilise pour les ventes, et non le stock depot.</p>
+          </div>
+        </div>
+        <div id="stock-products-summary" class="sales-metrics"></div>
+      </section>
+
+      <section class="card" style="margin-top: 16px;">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Date</th>
+                <th>Station</th>
+                <th>Client</th>
+                <th>Telephone</th>
+                <th>Carburant</th>
+                <th>Quantite</th>
+                <th>Devise</th>
+                <th>Net</th>
+                <th>Dette restante</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="ventes-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="../ressources/js/auth_guard.js"></script>
+  <script type="module" src="../ressources/js/ventes_station.js"></script>
+</body>
+</html>

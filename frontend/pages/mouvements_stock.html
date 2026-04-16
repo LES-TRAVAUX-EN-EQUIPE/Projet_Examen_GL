@@ -50,6 +50,70 @@
           </table>
         </div>
       </section>
+
+      <section class="card stock-sheet-card" style="margin-top: 16px;">
+        <div class="stock-sheet-header">
+          <div>
+            <h2>Fiche de stock</h2>
+            <p class="stock-sheet-subtitle">Consultez les entrées, sorties et le solde courant, puis imprimez la fiche.</p>
+          </div>
+          <button class="btn btn-secondary" type="button" id="btn-print-stock-sheet">
+            <i class="bi bi-printer"></i> Imprimer la fiche
+          </button>
+        </div>
+
+        <form id="stock-sheet-form" class="stock-sheet-filters">
+          <div class="form-group">
+            <label for="sheet-site-type">Type de site</label>
+            <select id="sheet-site-type" name="site_type">
+              <option value="all">Tous</option>
+              <option value="depot">Dépôt</option>
+              <option value="station">Station</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sheet-site-id">Site</label>
+            <select id="sheet-site-id" name="site_id">
+              <option value="all">Tous les sites</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sheet-carburant-id">Carburant</label>
+            <select id="sheet-carburant-id" name="type_carburant_id">
+              <option value="all">Tous les carburants</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sheet-period">Période</label>
+            <select id="sheet-period" name="period">
+              <option value="all">Toute la période</option>
+              <option value="30">30 derniers jours</option>
+              <option value="90">90 derniers jours</option>
+              <option value="365">12 derniers mois</option>
+            </select>
+          </div>
+        </form>
+
+        <div class="stock-sheet-summary" id="stock-sheet-summary"></div>
+
+        <div class="table-wrap">
+          <table id="stock-sheet-table">
+            <thead>
+              <tr>
+                <th>Référence</th>
+                <th>Date</th>
+                <th>Site</th>
+                <th>Type</th>
+                <th>État sortie</th>
+                <th>Entrée</th>
+                <th>Sortie</th>
+                <th>Solde</th>
+              </tr>
+            </thead>
+            <tbody id="stock-sheet-body"></tbody>
+          </table>
+        </div>
+      </section>
     </main>
   </div>
 

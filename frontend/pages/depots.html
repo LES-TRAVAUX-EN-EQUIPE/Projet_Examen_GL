@@ -50,6 +50,66 @@
           </table>
         </div>
       </section>
+
+      <section class="settings-grid" style="margin-top: 16px;">
+        <article class="card">
+          <h2>Stock dépôt par produit</h2>
+          <p class="settings-subtitle">Visualisez les quantites disponibles par carburant pour chaque depot.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Depot</th>
+                  <th>Carburant</th>
+                  <th>Quantite disponible</th>
+                  <th>Seuil alerte</th>
+                </tr>
+              </thead>
+              <tbody id="stocks-depots-body"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card" id="depot-stock-adjust-card">
+          <h2>Ajuster un stock produit</h2>
+          <p class="settings-subtitle">Ajoutez ou retirez une quantite sur un produit dans un depot avec traçabilité.</p>
+          <form id="stock-depot-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="stock-depot-id">Depot</label>
+                <select id="stock-depot-id" name="depot_id" required></select>
+              </div>
+              <div class="form-group">
+                <label for="stock-type-carburant-id">Carburant</label>
+                <select id="stock-type-carburant-id" name="type_carburant_id" required></select>
+              </div>
+              <div class="form-group">
+                <label for="stock-operation">Operation</label>
+                <select id="stock-operation" name="operation">
+                  <option value="entree">Entree</option>
+                  <option value="sortie">Sortie</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="stock-quantite">Quantite</label>
+                <input type="number" id="stock-quantite" name="quantite" min="0" step="0.01" required>
+              </div>
+              <div class="form-group">
+                <label for="stock-seuil-alerte">Seuil alerte</label>
+                <input type="number" id="stock-seuil-alerte" name="seuil_alerte" min="0" step="0.01">
+              </div>
+              <div class="form-group">
+                <label for="stock-commentaire">Commentaire</label>
+                <input type="text" id="stock-commentaire" name="commentaire">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Enregistrer l'ajustement</button>
+            </div>
+            <p id="stock-depot-notice" class="notice"></p>
+          </form>
+        </article>
+      </section>
     </main>
   </div>
 
