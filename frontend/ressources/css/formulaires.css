@@ -271,6 +271,19 @@ body.modal-open {
   margin-bottom: 14px;
 }
 
+.stock-sheet-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stock-sheet-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
 .stock-sheet-subtitle {
   margin: 0;
   color: var(--muted);
@@ -357,6 +370,86 @@ body.modal-open {
   margin-bottom: 4px;
 }
 
+.payment-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 17, 34, 0.54);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 85;
+}
+
+.payment-overlay.open {
+  display: flex;
+}
+
+.payment-dialog {
+  width: min(520px, 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+  border: 1px solid #d8e2ed;
+  border-radius: 18px;
+  box-shadow: 0 20px 54px rgba(10, 25, 52, 0.26);
+  padding: 20px;
+}
+
+.payment-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.payment-dialog-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.payment-dialog-close {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.payment-dialog-hint {
+  margin: 10px 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.payment-dialog-error {
+  min-height: 20px;
+  margin: 8px 0 0;
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.payment-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .payment-dialog-actions {
+    flex-direction: column-reverse;
+  }
+
+  .payment-dialog-actions .btn {
+    width: 100%;
+  }
+}
+
 @media print {
   .sidebar,
   .topbar,
@@ -365,6 +458,16 @@ body.modal-open {
   #stock-sheet-form,
   #btn-print-stock-sheet {
     display: none !important;
+  }
+
+  .stock-sheet-logo {
+    display: block !important;
+    width: 72px !important;
+    height: 72px !important;
+  }
+
+  .stock-sheet-brand {
+    align-items: center;
   }
 
   .content {

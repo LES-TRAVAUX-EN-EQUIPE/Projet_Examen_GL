@@ -9,13 +9,13 @@
   --muted: #6b7f97;
   --primary: #1186c9;
   --primary-dark: #0f6ea5;
-  --ok: #0a7f6b;
+  --ok: #00c9a7;
   --danger: #e02424;
   --danger-dark: #c81e1e;
   --border: #d2dbe6;
-  --sidebar: #f5f7fa;
-  --sidebar-active: #0e1d3d;
-  --sidebar-text: #18345a;
+  --sidebar: #101828;
+  --sidebar-active: #00c9a7;
+  --sidebar-text: #b0b8c1;
   --radius: 12px;
   --shadow: 0 2px 10px rgba(10, 25, 52, 0.06);
 }
@@ -28,13 +28,13 @@ body.dark-theme {
   --muted: #9eb0c8;
   --primary: #1aa8e6;
   --primary-dark: #1195d1;
-  --ok: #4bffd2;
+  --ok: #00c9a7;
   --danger: #ef4444;
   --danger-dark: #dc2626;
   --border: #2a4269;
-  --sidebar: #0b1635;
-  --sidebar-active: #081328;
-  --sidebar-text: #d9e7ff;
+  --sidebar: #101828;
+  --sidebar-active: #00c9a7;
+  --sidebar-text: #b0b8c1;
   --shadow: none;
 }
 
@@ -61,28 +61,73 @@ body.compact-theme {
   bottom: 0;
   width: 260px;
   overflow-y: auto;
-  background: var(--sidebar);
-  border-right: 1px solid var(--border);
+  background: #101828;
+  border-right: none;
   padding: 14px 10px 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section utilisateur en haut de la sidebar */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  padding: 16px 12px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #22304a;
+  gap: 12px;
+}
+
+.sidebar-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #22304a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #00c9a7;
+}
+
+.sidebar-avatar i {
+  font-size: 28px;
+  color: #00c9a7;
+}
+
+.sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-user-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+}
+
+.sidebar-user-role {
+  font-size: 12px;
+  color: #b0b8c1;
 }
 
 .brand {
   margin: 8px 10px 16px;
   font-size: 20px;
   font-weight: 800;
-  color: #0a8a72;
+  color: #00c9a7;
+  padding: 0 12px;
 }
 
 body.dark-theme .brand {
-  color: #53f6cf;
+  color: #00c9a7;
 }
 
 .menu-group-toggle {
   width: calc(100% - 12px);
   margin: 8px 6px 4px;
-  border: 1px solid var(--border);
-  background: var(--surface-soft);
-  color: var(--sidebar-text);
+  border: 1px solid #22304a;
+  background: #162032;
+  color: #b0b8c1;
   border-radius: 10px;
   padding: 8px 10px;
   display: flex;
@@ -117,22 +162,23 @@ body.dark-theme .brand {
 .nav-link {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin: 3px 6px;
-  padding: 9px 11px;
-  color: var(--sidebar-text);
+  gap: 12px;
+  margin: 4px 6px;
+  padding: 10px 14px;
+  color: #b0b8c1;
   text-decoration: none;
   border-radius: 10px;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-.nav-link i { font-size: 14px; }
-.nav-link.sub { padding-left: 18px; font-size: 13px; }
+.nav-link i { font-size: 16px; }
+.nav-link.sub { padding-left: 22px; font-size: 13px; }
 
 .nav-link:hover,
 .nav-link.active {
-  background: var(--sidebar-active);
+  background: #00c9a7;
   color: #fff;
 }
 
@@ -171,11 +217,11 @@ body.compact-theme .content {
   margin: 0;
   font-size: 17px;
   font-weight: 800;
-  color: #0a7f6a;
+  color: #00c9a7;
 }
 
 body.dark-theme .topbar-title {
-  color: #53f6cf;
+  color: #00c9a7;
 }
 
 .topbar-user {
@@ -186,6 +232,32 @@ body.dark-theme .topbar-title {
 }
 
 .topbar-actions { display: flex; gap: 8px; }
+
+.notification-btn {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(224, 36, 36, 0.28);
+  border: 2px solid var(--surface);
+}
+
+body.dark-theme .notification-badge {
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.4);
+}
 
 .sidebar-toggle {
   display: none;
@@ -234,7 +306,7 @@ body.dark-theme .topbar-title {
 .logout-btn {
   border: none;
   background: transparent;
-  color: var(--ok);
+  color: #00c9a7;
   border-radius: 8px;
   padding: 7px 12px;
   font-weight: 800;
@@ -248,8 +320,8 @@ body.dark-theme .topbar-title {
 .logout-btn i { font-size: 12px; }
 
 .logout-btn:hover {
-  background: #e8f6f1;
-  color: #0a7f6b;
+  background: #00c9a7;
+  color: #fff;
 }
 
 h1 { margin: 0 0 16px; font-size: 16px; }
@@ -299,7 +371,7 @@ body.compact-theme .card {
 .btn-danger:hover { background: var(--danger-dark); }
 
 .btn-add-entity {
-  background: #0e1d3d;
+  background: #00c9a7;
   color: #fff;
   border-radius: 9px;
   padding: 8px 14px;
@@ -310,7 +382,9 @@ body.compact-theme .card {
   font-weight: 700;
 }
 
-.btn-add-entity:hover { background: #132a57; }
+.btn-add-entity:hover {
+  background: #00b396;
+}
 
 .notice.info { color: var(--primary); }
 

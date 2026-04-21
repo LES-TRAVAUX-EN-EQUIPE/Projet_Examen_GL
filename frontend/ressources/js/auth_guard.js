@@ -1,4 +1,6 @@
-﻿const ROLE_NAMES = {
+﻿import { apiRequete } from './api_client.js';
+
+const ROLE_NAMES = {
   1: 'Administrateur',
   2: 'Gestionnaire de stock',
   3: 'Responsable logistique',
@@ -23,6 +25,7 @@ const ROLE_POLICY = {
       'livraisons.html': 'rw',
       'mouvements_stock.html': 'rw',
       'ventes_station.html': 'rw',
+      'dettes.html': 'rw',
       'alertes.html': 'rw',
       'rapports.html': 'r',
       'parametres.html': 'rw',
@@ -41,6 +44,7 @@ const ROLE_POLICY = {
       'approvisionnements.html': 'rw',
       'mouvements_stock.html': 'rw',
       'ventes_station.html': 'r',
+      'dettes.html': 'r',
       'alertes.html': 'rw',
       'rapports.html': 'r',
       'parametres.html': 'rw',
@@ -57,6 +61,7 @@ const ROLE_POLICY = {
       'prix_carburants.html': 'r',
       'taux_change_stations.html': 'r',
       'ventes_station.html': 'r',
+      'dettes.html': 'r',
       'depots.html': 'r',
       'alertes.html': 'rw',
       'rapports.html': 'r',
@@ -73,6 +78,7 @@ const ROLE_POLICY = {
       'prix_carburants.html': 'r',
       'taux_change_stations.html': 'rw',
       'ventes_station.html': 'rw',
+      'dettes.html': 'rw',
       'alertes.html': 'rw',
       'rapports.html': 'r',
       'parametres.html': 'rw',
@@ -83,6 +89,7 @@ const ROLE_POLICY = {
     pages: {
       'tableau_de_bord.html': 'r',
       'ventes_station.html': 'r',
+      'dettes.html': 'r',
       'alertes.html': 'r',
       'rapports.html': 'r',
       'parametres.html': 'rw',
@@ -119,6 +126,7 @@ const MENU_GROUPS = [
       { href: 'livraisons.html', label: 'Livraisons', icon: 'bi-send-check' },
       { href: 'mouvements_stock.html', label: 'Mouvements stock', icon: 'bi-arrow-left-right' },
       { href: 'ventes_station.html', label: 'Ventes station', icon: 'bi-receipt-cutoff' },
+      { href: 'dettes.html', label: 'Dettes', icon: 'bi-wallet2' },
       { href: 'alertes.html', label: 'Alertes', icon: 'bi-exclamation-triangle-fill' },
     ],
   },
@@ -177,6 +185,18 @@ function renderSidebar(page, allowedPages) {
       const panel = sidebar.querySelector(`#${target}`);
       if (!panel) return;
       const isOpen = panel.classList.contains('open');
+
+      sidebar.querySelectorAll('.menu-group-panel.open').forEach((openedPanel) => {
+        if (openedPanel !== panel) {
+          openedPanel.classList.remove('open');
+          const openedButton = sidebar.querySelector(`.menu-group-toggle[data-target="${openedPanel.id}"]`);
+          if (openedButton) {
+            openedButton.classList.remove('open');
+            openedButton.setAttribute('aria-expanded', 'false');
+          }
+        }
+      });
+
       panel.classList.toggle('open', !isOpen);
       btn.classList.toggle('open', !isOpen);
       btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
@@ -198,7 +218,10 @@ function buildTopbar(user, roleId) {
     </div>
     <div class="topbar-user">
       <div class="topbar-actions">
-        <button class="icon-btn" type="button" aria-label="Notifications"><i class="bi bi-bell-fill"></i></button>
+        <button class="icon-btn notification-btn" type="button" id="notifications-btn" aria-label="Notifications">
+          <i class="bi bi-bell-fill"></i>
+          <span class="notification-badge" id="notifications-badge" hidden>0</span>
+        </button>
         <button class="icon-btn" type="button" id="theme-toggle" aria-label="Thème"><i class="bi bi-moon-fill"></i></button>
       </div>
       <span class="user-chip"><b>${(user.nom || '').toUpperCase()} ${(user.prenom || '')}</b> · ${ROLE_NAMES[roleId] || 'Profil'}</span>
@@ -234,6 +257,34 @@ function buildTopbar(user, roleId) {
 
     syncIcon();
   }
+
+  const notificationsBtn = document.getElementById('notifications-btn');
+  if (notificationsBtn) {
+    notificationsBtn.addEventListener('click', () => {
+      window.location.href = 'alertes.html';
+    });
+  }
+
+  const notificationsBadge = document.getElementById('notifications-badge');
+  const actualiserBadgeNotifications = async () => {
+    if (!notificationsBadge) return;
+
+    try {
+      const resultat = await apiRequete('dashboard');
+      const compteur = Number(resultat?.compteurs?.alertes_ouvertes || 0);
+      if (compteur > 0) {
+        notificationsBadge.textContent = String(compteur);
+        notificationsBadge.hidden = false;
+      } else {
+        notificationsBadge.hidden = true;
+      }
+    } catch (_error) {
+      notificationsBadge.hidden = true;
+    }
+  };
+
+  actualiserBadgeNotifications();
+  window.setInterval(actualiserBadgeNotifications, 60000);
 }
 
 function initResponsiveSidebar() {

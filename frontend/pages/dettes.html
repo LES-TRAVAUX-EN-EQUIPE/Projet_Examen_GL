@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des dettes - FuelTrack</title>
+  <link rel="stylesheet" href="../ressources/css/style.css">
+  <link rel="stylesheet" href="../ressources/css/formulaires.css">
+  <link rel="stylesheet" href="../ressources/css/tableaux.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2 class="brand">FuelTrack</h2>
+    </aside>
+
+    <main class="content">
+      <div class="page-header">
+        <h1>Gestion des dettes clients</h1>
+      </div>
+
+      <section class="card">
+        <div class="stock-sheet-header">
+          <div>
+            <h2>Situation actuelle</h2>
+            <p class="stock-sheet-subtitle">Suivi des ventes non soldées et paiements partiels.</p>
+          </div>
+          <button id="dettes-refresh" type="button" class="btn btn-secondary">Actualiser</button>
+        </div>
+        <div id="dettes-metrics" class="sales-metrics"></div>
+        <p id="dettes-notice" class="notice"></p>
+      </section>
+
+      <section class="card" style="margin-top: 16px;">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Reference vente</th>
+                <th>Date</th>
+                <th>Station</th>
+                <th>Client</th>
+                <th>Telephone</th>
+                <th>Devise</th>
+                <th>Montant net</th>
+                <th>Montant paye</th>
+                <th>Dette restante</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="dettes-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="../ressources/js/auth_guard.js"></script>
+  <script type="module" src="../ressources/js/dettes.js"></script>
+</body>
+</html>

@@ -26,6 +26,12 @@ let tauxRows = [];
 let ventes = [];
 let stocksStations = [];
 let stationResponsable = null;
+let paymentOverlay = null;
+let paymentResolve = null;
+let paymentInput = null;
+let paymentError = null;
+let paymentTitle = null;
+let paymentHint = null;
 
 function showNotice(message, isError = false) {
   notice.textContent = message;
@@ -53,6 +59,123 @@ function formatDate(value) {
 
 function normalisePhone(phone) {
   return String(phone || '').replace(/\s+/g, '').trim();
+}
+
+function parseAmount(value) {
+  return Number(String(value ?? '').replace(',', '.').trim());
+}
+
+function closePaymentDialog(value = null) {
+  if (!paymentOverlay) return;
+  paymentOverlay.classList.remove('open');
+  document.body.classList.remove('modal-open');
+  if (paymentResolve) {
+    const resolve = paymentResolve;
+    paymentResolve = null;
+    resolve(value);
+  }
+}
+
+function openPaymentDialog(vente) {
+  if (!paymentOverlay || !paymentInput || !paymentTitle || !paymentHint || !paymentError) {
+    return Promise.resolve(null);
+  }
+
+  const devise = vente.devise_paiement || 'USD';
+  const montantRestant = Number(vente.montant_restant || 0);
+
+  paymentTitle.textContent = `Payer une dette - ${vente.reference_vente || ''}`;
+  paymentHint.textContent = `Dette restante: ${formatNumber(montantRestant)} ${devise}`;
+  paymentInput.value = String(montantRestant).replace('.', ',');
+  paymentInput.max = String(montantRestant);
+  paymentInput.dataset.maxAmount = String(montantRestant);
+  paymentError.textContent = '';
+
+  paymentOverlay.classList.add('open');
+  document.body.classList.add('modal-open');
+
+  window.setTimeout(() => {
+    paymentInput.focus();
+    paymentInput.select();
+  }, 0);
+
+  return new Promise((resolve) => {
+    paymentResolve = resolve;
+  });
+}
+
+function initPaymentDialog() {
+  paymentOverlay = document.createElement('div');
+  paymentOverlay.className = 'payment-overlay';
+  paymentOverlay.innerHTML = `
+    <div class="payment-dialog" role="dialog" aria-modal="true" aria-labelledby="payment-dialog-title">
+      <div class="payment-dialog-header">
+        <h3 id="payment-dialog-title" class="payment-dialog-title"></h3>
+        <button type="button" class="payment-dialog-close" aria-label="Fermer"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <p class="payment-dialog-hint"></p>
+      <div class="form-group">
+        <label for="payment-amount-input">Montant a payer</label>
+        <input id="payment-amount-input" type="text" inputmode="decimal" autocomplete="off" required>
+      </div>
+      <p class="payment-dialog-error" aria-live="polite"></p>
+      <div class="payment-dialog-actions">
+        <button type="button" class="btn btn-secondary" data-action="cancel">Annuler</button>
+        <button type="button" class="btn btn-primary" data-action="confirm">Valider le paiement</button>
+      </div>
+    </div>
+  `;
+
+  paymentTitle = paymentOverlay.querySelector('.payment-dialog-title');
+  paymentHint = paymentOverlay.querySelector('.payment-dialog-hint');
+  paymentInput = paymentOverlay.querySelector('#payment-amount-input');
+  paymentError = paymentOverlay.querySelector('.payment-dialog-error');
+
+  const closeBtn = paymentOverlay.querySelector('.payment-dialog-close');
+  const cancelBtn = paymentOverlay.querySelector('[data-action="cancel"]');
+  const confirmBtn = paymentOverlay.querySelector('[data-action="confirm"]');
+
+  const submit = () => {
+    const montant = parseAmount(paymentInput.value);
+    const montantMax = Number(paymentInput.dataset.maxAmount || 0);
+
+    if (!(montant > 0)) {
+      paymentError.textContent = 'Montant de paiement invalide.';
+      return;
+    }
+
+    if (montant > montantMax) {
+      paymentError.textContent = 'Le paiement ne peut pas depasser la dette restante.';
+      return;
+    }
+
+    closePaymentDialog(montant);
+  };
+
+  closeBtn.addEventListener('click', () => closePaymentDialog(null));
+  cancelBtn.addEventListener('click', () => closePaymentDialog(null));
+  confirmBtn.addEventListener('click', submit);
+
+  paymentInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      submit();
+    }
+  });
+
+  paymentOverlay.addEventListener('click', (event) => {
+    if (event.target === paymentOverlay) {
+      closePaymentDialog(null);
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && paymentOverlay.classList.contains('open')) {
+      closePaymentDialog(null);
+    }
+  });
+
+  document.body.appendChild(paymentOverlay);
 }
 
 function getStationLabel(id) {
@@ -356,21 +479,8 @@ ventesBody.addEventListener('click', async (event) => {
     return;
   }
 
-  const saisie = window.prompt(
-    `Dette restante ${formatNumber(montantRestant)} ${vente.devise_paiement}. Montant à payer :`,
-    formatNumber(montantRestant)
-  );
-  if (saisie === null) return;
-
-  const montant = Number(String(saisie).replace(',', '.'));
-  if (!(montant > 0)) {
-    showNotice('Montant de paiement invalide.', true);
-    return;
-  }
-  if (montant > montantRestant) {
-    showNotice('Le paiement ne peut pas dépasser la dette restante.', true);
-    return;
-  }
+  const montant = await openPaymentDialog(vente);
+  if (montant === null) return;
 
   try {
     await apiRequete('ventes_station', 'PUT', { paiement: montant }, { id: vente.id });
@@ -382,6 +492,7 @@ ventesBody.addEventListener('click', async (event) => {
 });
 
 form.date_vente.value = formatDateInputNow();
+initPaymentDialog();
 if (!canWrite) {
   form.closest('.card')?.remove();
   clientPreview.closest('.card')?.remove();

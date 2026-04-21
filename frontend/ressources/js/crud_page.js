@@ -1,4 +1,4 @@
-﻿import { apiRequete } from './api_client.js';
+import { apiRequete } from './api_client.js';
 
 export async function initialiserPageCrud(config) {
   const form = document.getElementById('crud-form');
@@ -168,6 +168,7 @@ export async function initialiserPageCrud(config) {
         elementEdition = null;
         form.reset();
         reinitialiserChampsSensibles();
+        appliquerValeursAutomatiques('force');
         effacerNotice();
         ouvrirModal(config.createModalTitle || `Ajouter ${nom}`);
       });
@@ -227,10 +228,7 @@ export async function initialiserPageCrud(config) {
           lookups[champ.nom] = [];
 
           if (canWrite) {
-            afficherNotice(
-              `Certaines listes du formulaire n'ont pas pu être chargées: ${error.message}`,
-              'error'
-            );
+            afficherNotice(`Certaines listes du formulaire n'ont pas pu être chargées: ${error.message}`, 'error');
           }
         }
       }
@@ -291,6 +289,10 @@ export async function initialiserPageCrud(config) {
         }
       }
 
+      if (champ.readonly) {
+        input.readOnly = true;
+      }
+
       if (champ.required) input.required = true;
 
       group.appendChild(input);
@@ -304,6 +306,30 @@ export async function initialiserPageCrud(config) {
       if (!input || champ.type !== 'password') continue;
       input.value = '';
       input.placeholder = '';
+    }
+  }
+
+  function appliquerValeursAutomatiques(mode = 'soft') {
+    if (!canWrite || elementEdition || typeof config.genererValeursAutomatiques !== 'function') {
+      return;
+    }
+
+    const valeurs = config.genererValeursAutomatiques({
+      entity: config.entity,
+      rows: cache,
+      form,
+      champs: config.champs,
+    });
+
+    if (!valeurs || typeof valeurs !== 'object') return;
+
+    for (const [nom, valeur] of Object.entries(valeurs)) {
+      const input = form.elements[nom];
+      if (!input) continue;
+
+      if (mode === 'force' || input.value === '') {
+        input.value = valeur ?? '';
+      }
     }
   }
 
@@ -419,6 +445,7 @@ export async function initialiserPageCrud(config) {
   async function chargerDonnees() {
     cache = await apiRequete(config.entity);
     renderTable();
+    appliquerValeursAutomatiques('soft');
     document.dispatchEvent(new CustomEvent('fueltrack:crud-data-loaded', {
       detail: {
         entity: config.entity,
@@ -466,6 +493,7 @@ export async function initialiserPageCrud(config) {
       elementEdition = null;
       form.reset();
       reinitialiserChampsSensibles();
+      appliquerValeursAutomatiques('force');
       if (canWrite) effacerNotice();
       if (creationMode === 'modal') fermerModal();
     });

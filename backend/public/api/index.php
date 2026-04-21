@@ -10,8 +10,9 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Role-Id, X-User-Id');
 header('Content-Type: application/json; charset=utf-8');
 
+// Permet les requêtes preflight CORS sans authentification
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
+    http_response_code(200);
     exit;
 }
 
@@ -161,6 +162,55 @@ function obtenirStationResponsable(PDO $pdo, int $userId): ?array
     return $row ?: null;
 }
 
+function utilisateurExiste(PDO $pdo, int $userId): bool
+{
+    if ($userId <= 0) {
+        return false;
+    }
+
+    $stmt = $pdo->prepare('SELECT id FROM utilisateurs WHERE id = :id LIMIT 1');
+    $stmt->execute(['id' => $userId]);
+    return (bool) $stmt->fetchColumn();
+}
+
+function determinerCreePar(PDO $pdo, int $userIdHeader, mixed $creeParSoumis): ?int
+{
+    $creeParSoumis = (int) $creeParSoumis;
+    if ($creeParSoumis > 0 && utilisateurExiste($pdo, $creeParSoumis)) {
+        return $creeParSoumis;
+    }
+
+    if ($userIdHeader > 0 && utilisateurExiste($pdo, $userIdHeader)) {
+        return $userIdHeader;
+    }
+
+    return null;
+}
+
+function normaliserDateHeure(string $valeur, string $champ): string
+{
+    $valeur = trim($valeur);
+    if ($valeur === '') {
+        reponseErreur(sprintf('Le champ %s est requis.', $champ), 422);
+    }
+
+    $formats = ['Y-m-d H:i:s', 'Y-m-d\TH:i', 'Y-m-d H:i', 'Y-m-d'];
+    foreach ($formats as $format) {
+        $date = DateTime::createFromFormat($format, $valeur);
+        if ($date instanceof DateTime) {
+            return $date->format('Y-m-d H:i:s');
+        }
+    }
+
+    $timestamp = strtotime($valeur);
+    if ($timestamp !== false) {
+        return date('Y-m-d H:i:s', $timestamp);
+    }
+
+    reponseErreur(sprintf('Format de date invalide pour %s.', $champ), 422);
+    return '';
+}
+
 function obtenirOuInitialiserStockStation(PDO $pdo, int $stationId, int $typeCarburantId): array
 {
     $stmtStock = $pdo->prepare(
@@ -180,7 +230,7 @@ function obtenirOuInitialiserStockStation(PDO $pdo, int $stationId, int $typeCar
             "SELECT
                 COALESCE(SUM(
                     CASE
-                        WHEN type_mouvement = 'entree_station' THEN quantite
+                        WHEN type_mouvement = 'entree_station' THEN quantite    
                         WHEN type_mouvement IN ('sortie_station', 'transfert') THEN -quantite
                         ELSE 0
                     END
@@ -194,7 +244,7 @@ function obtenirOuInitialiserStockStation(PDO $pdo, int $stationId, int $typeCar
             'type_carburant_id' => $typeCarburantId,
         ]);
         $row = $stmtMouvements->fetch();
-        $quantiteCalculee = max((float) ($row['stock_calcule'] ?? 0), 0);
+        $quantiteCalculee = max((float) ($row['stock_calcule'] ?? 0), 0);       
 
         if (abs($quantiteCalculee - (float) $stock['quantite_disponible']) > 0.0001) {
             $stmtUpdate = $pdo->prepare(
@@ -216,7 +266,7 @@ function obtenirOuInitialiserStockStation(PDO $pdo, int $stationId, int $typeCar
         "SELECT
             COALESCE(SUM(
                 CASE
-                    WHEN type_mouvement = 'entree_station' THEN quantite
+                    WHEN type_mouvement = 'entree_station' THEN quantite        
                     WHEN type_mouvement IN ('sortie_station', 'transfert') THEN -quantite
                     ELSE 0
                 END
@@ -360,6 +410,7 @@ function ajusterStockDepot(PDO $pdo, int $depotId, int $typeCarburantId, float $
     return [
         'id' => (int) $stock['id'],
         'quantite_disponible' => max($nouvelleQuantite, 0),
+        'seuil_alerte' => (float) ($stock['seuil_alerte'] ?? 0),
     ];
 }
 
@@ -385,7 +436,196 @@ function ajusterStockStation(PDO $pdo, int $stationId, int $typeCarburantId, flo
     return [
         'id' => (int) $stock['id'],
         'quantite_disponible' => max($nouvelleQuantite, 0),
+        'seuil_alerte' => (float) ($stock['seuil_alerte'] ?? 0),
     ];
+}
+
+function formaterNombreAlerte(float $valeur): string
+{
+    $formatte = rtrim(rtrim(number_format($valeur, 2, '.', ''), '0'), '.');
+    return $formatte === '' ? '0' : $formatte;
+}
+
+function obtenirLibelleStock(PDO $pdo, string $typeSite, int $siteId): string
+{
+    if ($typeSite === 'depot') {
+        $stmt = $pdo->prepare('SELECT nom_depot FROM depots WHERE id = :id LIMIT 1');
+        $stmt->execute(['id' => $siteId]);
+        return (string) ($stmt->fetchColumn() ?: 'Dépôt inconnu');
+    }
+
+    if ($typeSite === 'station') {
+        $stmt = $pdo->prepare('SELECT nom_station FROM stations WHERE id = :id LIMIT 1');
+        $stmt->execute(['id' => $siteId]);
+        return (string) ($stmt->fetchColumn() ?: 'Station inconnue');
+    }
+
+    return 'Site inconnu';
+}
+
+function obtenirNomCarburant(PDO $pdo, int $typeCarburantId): string
+{
+    $stmt = $pdo->prepare('SELECT nom_carburant FROM types_carburant WHERE id = :id LIMIT 1');
+    $stmt->execute(['id' => $typeCarburantId]);
+    return (string) ($stmt->fetchColumn() ?: 'Carburant inconnu');
+}
+
+function mettreAJourAlerteStock(PDO $pdo, string $typeSite, int $siteId, int $typeCarburantId, float $quantite, float $seuilAlerte, int $userId): void
+{
+    $typeAlerte = null;
+    $niveau = null;
+
+    if ($quantite <= 0) {
+        $typeAlerte = 'stock_critique';
+        $niveau = 'critique';
+    } elseif ($seuilAlerte > 0 && $quantite <= $seuilAlerte) {
+        $typeAlerte = 'stock_faible';
+        $niveau = 'eleve';
+    }
+
+    $siteLabel = obtenirLibelleStock($pdo, $typeSite, $siteId);
+    $carburantLabel = obtenirNomCarburant($pdo, $typeCarburantId);
+    $dateAlerte = date('Y-m-d H:i:s');
+    $colonneSite = $typeSite === 'depot' ? 'depot_id' : 'station_id';
+    $conditionSite = sprintf('%s = :site_id', $colonneSite);
+
+    $stmtResoudre = $pdo->prepare(
+        "UPDATE alertes
+         SET statut = 'resolue'
+         WHERE statut <> 'resolue'
+           AND type_alerte IN ('stock_faible', 'stock_critique')
+           AND $conditionSite
+           AND type_carburant_id = :type_carburant_id"
+    );
+    $stmtResoudre->execute([
+        'site_id' => $siteId,
+        'type_carburant_id' => $typeCarburantId,
+    ]);
+
+    if ($typeAlerte === null) {
+        return;
+    }
+
+    $message = sprintf(
+        'Le %s %s pour %s est %s: %s litres restants pour un seuil de %s litres.',
+        $typeSite === 'depot' ? 'dépôt' : 'station',
+        $siteLabel,
+        $carburantLabel,
+        $typeAlerte === 'stock_critique' ? 'en stock critique' : 'sous le seuil d’alerte',
+        formaterNombreAlerte($quantite),
+        formaterNombreAlerte($seuilAlerte)
+    );
+
+    $stmtTrouver = $pdo->prepare(
+        "SELECT id
+         FROM alertes
+         WHERE statut <> 'resolue'
+           AND type_alerte = :type_alerte
+           AND $conditionSite
+           AND type_carburant_id = :type_carburant_id
+         ORDER BY id DESC
+         LIMIT 1"
+    );
+    $stmtTrouver->execute([
+        'type_alerte' => $typeAlerte,
+        'site_id' => $siteId,
+        'type_carburant_id' => $typeCarburantId,
+    ]);
+    $alerteId = $stmtTrouver->fetchColumn();
+
+    if ($alerteId) {
+        $stmtUpdate = $pdo->prepare(
+            'UPDATE alertes
+             SET niveau = :niveau,
+                 message = :message,
+                 statut = :statut,
+                 date_alerte = :date_alerte,
+                 cree_par = :cree_par
+             WHERE id = :id'
+        );
+        $stmtUpdate->execute([
+            'id' => (int) $alerteId,
+            'niveau' => $niveau,
+            'message' => $message,
+            'statut' => 'nouvelle',
+            'date_alerte' => $dateAlerte,
+            'cree_par' => $userId > 0 ? $userId : null,
+        ]);
+        return;
+    }
+
+    $stmtInsert = $pdo->prepare(
+        'INSERT INTO alertes (
+            type_alerte, niveau, depot_id, station_id, type_carburant_id,
+            message, statut, date_alerte, cree_par
+         ) VALUES (
+            :type_alerte, :niveau, :depot_id, :station_id, :type_carburant_id,
+            :message, :statut, :date_alerte, :cree_par
+         )'
+    );
+    $stmtInsert->execute([
+        'type_alerte' => $typeAlerte,
+        'niveau' => $niveau,
+        'depot_id' => $typeSite === 'depot' ? $siteId : null,
+        'station_id' => $typeSite === 'station' ? $siteId : null,
+        'type_carburant_id' => $typeCarburantId,
+        'message' => $message,
+        'statut' => 'nouvelle',
+        'date_alerte' => $dateAlerte,
+        'cree_par' => $userId > 0 ? $userId : null,
+    ]);
+}
+
+function synchroniserAlertesStockDepot(PDO $pdo, int $depotId, int $typeCarburantId, int $userId): void
+{
+    $stmt = $pdo->prepare(
+        'SELECT quantite_disponible, seuil_alerte
+         FROM stocks_depots
+         WHERE depot_id = :depot_id AND type_carburant_id = :type_carburant_id
+         LIMIT 1'
+    );
+    $stmt->execute([
+        'depot_id' => $depotId,
+        'type_carburant_id' => $typeCarburantId,
+    ]);
+    $stock = $stmt->fetch();
+    if (!$stock) return;
+
+    mettreAJourAlerteStock(
+        $pdo,
+        'depot',
+        $depotId,
+        $typeCarburantId,
+        (float) $stock['quantite_disponible'],
+        (float) ($stock['seuil_alerte'] ?? 0),
+        $userId
+    );
+}
+
+function synchroniserAlertesStockStation(PDO $pdo, int $stationId, int $typeCarburantId, int $userId): void
+{
+    $stmt = $pdo->prepare(
+        'SELECT quantite_disponible, seuil_alerte
+         FROM stocks_stations
+         WHERE station_id = :station_id AND type_carburant_id = :type_carburant_id
+         LIMIT 1'
+    );
+    $stmt->execute([
+        'station_id' => $stationId,
+        'type_carburant_id' => $typeCarburantId,
+    ]);
+    $stock = $stmt->fetch();
+    if (!$stock) return;
+
+    mettreAJourAlerteStock(
+        $pdo,
+        'station',
+        $stationId,
+        $typeCarburantId,
+        (float) $stock['quantite_disponible'],
+        (float) ($stock['seuil_alerte'] ?? 0),
+        $userId
+    );
 }
 
 function synchroniserImpactApprovisionnement(PDO $pdo, ?array $ancien, array $nouveau, int $userId): void
@@ -400,6 +640,7 @@ function synchroniserImpactApprovisionnement(PDO $pdo, ?array $ancien, array $no
             (int) $ancien['type_carburant_id'],
             -((float) $ancien['quantite'])
         );
+        synchroniserAlertesStockDepot($pdo, (int) $ancien['depot_id'], (int) $ancien['type_carburant_id'], $userId);
 
         $stmtDelete = $pdo->prepare('DELETE FROM mouvements_stock WHERE approvisionnement_id = :approvisionnement_id');
         $stmtDelete->execute(['approvisionnement_id' => (int) $ancien['id']]);
@@ -412,6 +653,7 @@ function synchroniserImpactApprovisionnement(PDO $pdo, ?array $ancien, array $no
             (int) $nouveau['type_carburant_id'],
             (float) $nouveau['quantite']
         );
+        synchroniserAlertesStockDepot($pdo, (int) $nouveau['depot_id'], (int) $nouveau['type_carburant_id'], $userId);
 
         $stmtInsert = $pdo->prepare(
             'INSERT INTO mouvements_stock (
@@ -430,7 +672,7 @@ function synchroniserImpactApprovisionnement(PDO $pdo, ?array $ancien, array $no
             'approvisionnement_id' => (int) $nouveau['id'],
             'quantite' => (float) $nouveau['quantite'],
             'date_mouvement' => (string) $nouveau['date_approvisionnement'],
-            'cree_par' => $userId > 0 ? $userId : ((int) ($nouveau['cree_par'] ?? 0) ?: null),
+            'cree_par' => ((int) ($nouveau['cree_par'] ?? 0) ?: ($userId > 0 ? $userId : null)),
             'commentaire' => sprintf('Reception approvisionnement %s', (string) $nouveau['reference_approvisionnement']),
         ]);
     }
@@ -455,6 +697,8 @@ function synchroniserImpactLivraison(PDO $pdo, ?array $ancien, array $nouveau, i
             (int) $ancien['type_carburant_id'],
             -((float) $ancien['quantite'])
         );
+        synchroniserAlertesStockDepot($pdo, (int) $ancien['depot_id'], (int) $ancien['type_carburant_id'], $userId);
+        synchroniserAlertesStockStation($pdo, (int) $ancien['station_id'], (int) $ancien['type_carburant_id'], $userId);
 
         $stmtDelete = $pdo->prepare('DELETE FROM mouvements_stock WHERE livraison_id = :livraison_id');
         $stmtDelete->execute(['livraison_id' => (int) $ancien['id']]);
@@ -474,6 +718,8 @@ function synchroniserImpactLivraison(PDO $pdo, ?array $ancien, array $nouveau, i
             (int) $nouveau['type_carburant_id'],
             (float) $nouveau['quantite']
         );
+        synchroniserAlertesStockDepot($pdo, (int) $nouveau['depot_id'], (int) $nouveau['type_carburant_id'], $userId);
+        synchroniserAlertesStockStation($pdo, (int) $nouveau['station_id'], (int) $nouveau['type_carburant_id'], $userId);
 
         $stmtSortie = $pdo->prepare(
             'INSERT INTO mouvements_stock (
@@ -1070,11 +1316,13 @@ function executerApprovisionnements(PDO $pdo): void
     if ($methode === 'POST') {
         $entree = filtrerDonnees(lireCorpsJson(), $GLOBALS['definitions']['approvisionnements']['champs']);
         verifierObligatoires($entree, $GLOBALS['definitions']['approvisionnements']['obligatoires']);
+        $entree['date_approvisionnement'] = normaliserDateHeure((string) ($entree['date_approvisionnement'] ?? ''), 'date_approvisionnement');
 
         $entree['statut'] = $entree['statut'] ?? 'en_attente';
         $coutUnitaire = (float) ($entree['cout_unitaire'] ?? 0);
         $quantite = (float) ($entree['quantite'] ?? 0);
         $coutTotal = $coutUnitaire * $quantite;
+        $creePar = determinerCreePar($pdo, $userId, $entree['cree_par'] ?? null);
 
         try {
             $pdo->beginTransaction();
@@ -1082,10 +1330,10 @@ function executerApprovisionnements(PDO $pdo): void
             $stmt = $pdo->prepare(
                 'INSERT INTO approvisionnements (
                     reference_approvisionnement, fournisseur_id, type_carburant_id, depot_id,
-                    quantite, cout_unitaire, cout_total, date_approvisionnement, statut, cree_par, commentaire
+                    quantite, cout_unitaire, date_approvisionnement, statut, cree_par, commentaire
                  ) VALUES (
                     :reference_approvisionnement, :fournisseur_id, :type_carburant_id, :depot_id,
-                    :quantite, :cout_unitaire, :cout_total, :date_approvisionnement, :statut, :cree_par, :commentaire
+                    :quantite, :cout_unitaire, :date_approvisionnement, :statut, :cree_par, :commentaire
                  )'
             );
             $stmt->execute([
@@ -1095,10 +1343,9 @@ function executerApprovisionnements(PDO $pdo): void
                 'depot_id' => (int) $entree['depot_id'],
                 'quantite' => $quantite,
                 'cout_unitaire' => $coutUnitaire,
-                'cout_total' => $coutTotal,
                 'date_approvisionnement' => $entree['date_approvisionnement'],
                 'statut' => $entree['statut'],
-                'cree_par' => isset($entree['cree_par']) ? (int) $entree['cree_par'] : ($userId > 0 ? $userId : null),
+                'cree_par' => $creePar,
                 'commentaire' => $entree['commentaire'] ?? null,
             ]);
 
@@ -1109,6 +1356,7 @@ function executerApprovisionnements(PDO $pdo): void
                 'quantite' => $quantite,
                 'cout_unitaire' => $coutUnitaire,
                 'cout_total' => $coutTotal,
+                'cree_par' => $creePar,
             ];
             synchroniserImpactApprovisionnement($pdo, null, $nouveau, $userId);
 
@@ -1140,9 +1388,11 @@ function executerApprovisionnements(PDO $pdo): void
         }
 
         $nouveau = array_merge($ancien, $entree);
+        $nouveau['date_approvisionnement'] = normaliserDateHeure((string) ($nouveau['date_approvisionnement'] ?? ''), 'date_approvisionnement');
         $nouveau['quantite'] = (float) ($nouveau['quantite'] ?? 0);
         $nouveau['cout_unitaire'] = (float) ($nouveau['cout_unitaire'] ?? 0);
         $nouveau['cout_total'] = $nouveau['quantite'] * $nouveau['cout_unitaire'];
+        $nouveau['cree_par'] = determinerCreePar($pdo, $userId, $nouveau['cree_par'] ?? null);
         $nouveau['id'] = $id;
 
         try {
@@ -1161,7 +1411,6 @@ function executerApprovisionnements(PDO $pdo): void
                      depot_id = :depot_id,
                      quantite = :quantite,
                      cout_unitaire = :cout_unitaire,
-                     cout_total = :cout_total,
                      date_approvisionnement = :date_approvisionnement,
                      statut = :statut,
                      cree_par = :cree_par,
@@ -1176,7 +1425,6 @@ function executerApprovisionnements(PDO $pdo): void
                 'depot_id' => (int) $nouveau['depot_id'],
                 'quantite' => $nouveau['quantite'],
                 'cout_unitaire' => $nouveau['cout_unitaire'],
-                'cout_total' => $nouveau['cout_total'],
                 'date_approvisionnement' => $nouveau['date_approvisionnement'],
                 'statut' => $nouveau['statut'],
                 'cree_par' => isset($nouveau['cree_par']) ? (int) $nouveau['cree_par'] : null,
@@ -1465,6 +1713,8 @@ function executerAjustementsStockDepots(PDO $pdo): void
             'commentaire' => trim((string) ($entree['commentaire'] ?? '')) ?: 'Ajustement manuel stock depot',
         ]);
 
+        synchroniserAlertesStockDepot($pdo, $depotId, $typeCarburantId, $userId);
+
         $pdo->commit();
         reponseSucces(['stock_id' => (int) $stock['id']], 'Ajustement de stock enregistre.', 201);
     } catch (Throwable $e) {
@@ -1535,6 +1785,8 @@ function executerAjustementsStockStations(PDO $pdo): void
             'cree_par' => $userId > 0 ? $userId : null,
             'commentaire' => trim((string) ($entree['commentaire'] ?? '')) ?: 'Ajustement manuel stock station',
         ]);
+
+        synchroniserAlertesStockStation($pdo, $stationId, $typeCarburantId, $userId);
 
         $pdo->commit();
         reponseSucces(['stock_id' => (int) $stock['id']], 'Ajustement de stock station enregistre.', 201);
