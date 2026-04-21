@@ -5,6 +5,8 @@ const tableBody = document.getElementById('table-body');
 const detailBox = document.getElementById('alerts-detail');
 const detailStatus = document.getElementById('detail-status');
 const refreshButton = document.getElementById('btn-refresh-alertes');
+const auth = window.FUELTRACK_AUTH || {};
+const canWrite = auth.pageMode === 'rw';
 
 let alertes = [];
 let alertesSelectionnee = null;
@@ -173,17 +175,19 @@ function renderTable() {
 }
 
 async function chargerLookups() {
-  const [depots, stations, typesCarburant, utilisateurs] = await Promise.all([
+  const requetes = [
     apiRequete('depots'),
     apiRequete('stations'),
     apiRequete('types_carburant'),
-    apiRequete('utilisateurs'),
-  ]);
+    canWrite ? apiRequete('utilisateurs') : Promise.resolve([]),
+  ];
 
-  lookups.depots = depots;
-  lookups.stations = stations;
-  lookups.types_carburant = typesCarburant;
-  lookups.utilisateurs = utilisateurs;
+  const [depots, stations, typesCarburant, utilisateurs] = await Promise.allSettled(requetes);
+
+  lookups.depots = depots.status === 'fulfilled' ? depots.value : [];
+  lookups.stations = stations.status === 'fulfilled' ? stations.value : [];
+  lookups.types_carburant = typesCarburant.status === 'fulfilled' ? typesCarburant.value : [];
+  lookups.utilisateurs = utilisateurs.status === 'fulfilled' ? utilisateurs.value : [];
 }
 
 async function chargerAlertes() {
@@ -226,6 +230,10 @@ if (refreshButton) {
 
 (async function init() {
   renderDetail(null);
-  await chargerLookups();
+  try {
+    await chargerLookups();
+  } catch (_error) {
+    // Les lookups sont optionnels pour afficher la liste des alertes.
+  }
   await chargerAlertes();
 })();

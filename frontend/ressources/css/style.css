@@ -583,3 +583,59 @@ body.compact-theme .card {
     font-size: 14px;
   }
 }
+
+@media print {
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 12px;
+  }
+
+  .sidebar,
+  .topbar,
+  .sidebar-backdrop,
+  .sidebar-toggle,
+  .btn-add-entity,
+  .notification-badge {
+    display: none !important;
+  }
+
+  .layout,
+  .content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  .table-wrap {
+    overflow: visible !important;
+  }
+
+  table {
+    width: 100% !important;
+    table-layout: fixed;
+  }
+
+  th,
+  td {
+    font-size: 11px !important;
+    padding: 6px 8px !important;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .actions,
+  .actions .btn {
+    display: none !important;
+  }
+
+  .page-header {
+    margin-bottom: 8px;
+  }
+}

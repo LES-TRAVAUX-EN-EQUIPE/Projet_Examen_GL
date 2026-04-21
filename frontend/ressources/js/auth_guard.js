@@ -218,6 +218,9 @@ function buildTopbar(user, roleId) {
     </div>
     <div class="topbar-user">
       <div class="topbar-actions">
+        <button class="icon-btn" type="button" id="print-page-btn" aria-label="Imprimer la page">
+          <i class="bi bi-printer-fill"></i>
+        </button>
         <button class="icon-btn notification-btn" type="button" id="notifications-btn" aria-label="Notifications">
           <i class="bi bi-bell-fill"></i>
           <span class="notification-badge" id="notifications-badge" hidden>0</span>
@@ -262,6 +265,13 @@ function buildTopbar(user, roleId) {
   if (notificationsBtn) {
     notificationsBtn.addEventListener('click', () => {
       window.location.href = 'alertes.html';
+    });
+  }
+
+  const printPageBtn = document.getElementById('print-page-btn');
+  if (printPageBtn) {
+    printPageBtn.addEventListener('click', () => {
+      window.print();
     });
   }
 

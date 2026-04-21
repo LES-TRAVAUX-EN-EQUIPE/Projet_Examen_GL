@@ -13,6 +13,8 @@ const clientPreview = document.getElementById('client-preview');
 const ventesBody = document.getElementById('ventes-body');
 const phonesList = document.getElementById('client-phones');
 const stockProductsSummary = document.getElementById('stock-products-summary');
+const ventesTable = ventesBody?.closest('table') || null;
+const stockSummaryCard = stockProductsSummary?.closest('.card') || null;
 
 const auth = window.FUELTRACK_AUTH || {};
 const currentUser = auth.user || {};
@@ -34,6 +36,9 @@ let paymentTitle = null;
 let paymentHint = null;
 
 function showNotice(message, isError = false) {
+  if (!notice) {
+    return;
+  }
   notice.textContent = message;
   notice.className = isError ? 'notice error' : 'notice';
 }
@@ -359,7 +364,8 @@ function renderHistory() {
     : ventes;
 
   if (rows.length === 0) {
-    ventesBody.innerHTML = '<tr><td colspan="11" class="empty">Aucune vente enregistree.</td></tr>';
+    const colspan = canWrite ? 11 : 10;
+    ventesBody.innerHTML = `<tr><td colspan="${colspan}" class="empty">Aucune vente enregistree.</td></tr>`;
     return;
   }
 
@@ -378,7 +384,7 @@ function renderHistory() {
       <td>${row.devise_paiement || ''}</td>
       <td>${formatNumber(row.montant_net)}</td>
       <td>${formatNumber(detteRestante)}</td>
-      <td>${detteRestante > 0 ? `<button class="btn btn-secondary btn-small" data-vente-id="${row.id}">Payer dette</button>` : ''}</td>
+      ${canWrite ? `<td>${detteRestante > 0 ? `<button class="btn btn-secondary btn-small" data-vente-id="${row.id}">Payer dette</button>` : ''}</td>` : ''}
     `;
     ventesBody.appendChild(tr);
   });
@@ -386,31 +392,52 @@ function renderHistory() {
 
 async function chargerDonnees() {
   try {
-    const [stationsRows, carburantsRows, clientsRows, tarifsRows, tauxData, ventesRows, stocksRows] = await Promise.all([
-      apiRequete('stations'),
-      apiRequete('types_carburant'),
-      apiRequete('clients'),
-      apiRequete('prix_carburants'),
-      apiRequete('taux_change_stations'),
-      apiRequete('ventes_station'),
-      apiRequete('stocks_stations'),
-    ]);
+    if (canWrite) {
+      const [stationsRows, carburantsRows, clientsRows, tarifsRows, tauxData, ventesRows, stocksRows] = await Promise.all([
+        apiRequete('stations'),
+        apiRequete('types_carburant'),
+        apiRequete('clients'),
+        apiRequete('prix_carburants'),
+        apiRequete('taux_change_stations'),
+        apiRequete('ventes_station'),
+        apiRequete('stocks_stations'),
+      ]);
 
-    stations = stationsRows;
-    carburants = carburantsRows;
-    clients = clientsRows;
-    tarifs = tarifsRows;
-    tauxRows = tauxData;
-    ventes = ventesRows;
-    stocksStations = stocksRows;
+      stations = stationsRows;
+      carburants = carburantsRows;
+      clients = clientsRows;
+      tarifs = tarifsRows;
+      tauxRows = tauxData;
+      ventes = ventesRows;
+      stocksStations = stocksRows;
+    } else {
+      const [stationsRows, carburantsRows, ventesRows, stocksRows] = await Promise.all([
+        apiRequete('stations'),
+        apiRequete('types_carburant'),
+        apiRequete('ventes_station'),
+        apiRequete('stocks_stations'),
+      ]);
+
+      stations = stationsRows;
+      carburants = carburantsRows;
+      clients = [];
+      tarifs = [];
+      tauxRows = [];
+      ventes = ventesRows;
+      stocksStations = stocksRows;
+    }
 
     findManagedStation();
-    populateStations();
-    populateCarburants();
-    populatePhoneList();
-    fillClientFromPhone();
-    updateMetrics();
-    renderStockSummary();
+    if (canWrite) {
+      populateStations();
+      populateCarburants();
+      populatePhoneList();
+      fillClientFromPhone();
+      updateMetrics();
+    }
+    if (canWrite) {
+      renderStockSummary();
+    }
     renderHistory();
   } catch (error) {
     showNotice(error.message, true);
@@ -454,18 +481,22 @@ form.addEventListener('submit', async (event) => {
   }
 });
 
-stationSelect.addEventListener('change', () => {
-  updateMetrics();
-  renderStockSummary();
-});
-carburantSelect.addEventListener('change', updateMetrics);
-form.quantite.addEventListener('input', updateMetrics);
-form.devise_paiement.addEventListener('change', updateMetrics);
-form.reduction.addEventListener('input', updateMetrics);
-phoneInput.addEventListener('change', fillClientFromPhone);
-phoneInput.addEventListener('blur', fillClientFromPhone);
+if (canWrite) {
+  stationSelect.addEventListener('change', () => {
+    updateMetrics();
+    renderStockSummary();
+  });
+  carburantSelect.addEventListener('change', updateMetrics);
+  form.quantite.addEventListener('input', updateMetrics);
+  form.devise_paiement.addEventListener('change', updateMetrics);
+  form.reduction.addEventListener('input', updateMetrics);
+  phoneInput.addEventListener('change', fillClientFromPhone);
+  phoneInput.addEventListener('blur', fillClientFromPhone);
+}
 
 ventesBody.addEventListener('click', async (event) => {
+  if (!canWrite) return;
+
   const button = event.target.closest('button[data-vente-id]');
   if (!button) return;
 
@@ -492,9 +523,17 @@ ventesBody.addEventListener('click', async (event) => {
 });
 
 form.date_vente.value = formatDateInputNow();
-initPaymentDialog();
+if (canWrite) {
+  initPaymentDialog();
+}
 if (!canWrite) {
-  form.closest('.card')?.remove();
-  clientPreview.closest('.card')?.remove();
+  form?.closest('.card')?.remove();
+  clientPreview?.closest('.card')?.remove();
+  stockSummaryCard?.remove();
+
+  const actionHeader = ventesTable?.querySelector('thead th:last-child');
+  if (actionHeader && actionHeader.textContent?.trim().toLowerCase() === 'action') {
+    actionHeader.remove();
+  }
 }
 chargerDonnees();

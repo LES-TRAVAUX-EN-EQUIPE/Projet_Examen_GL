@@ -451,33 +451,50 @@ body.modal-open {
 }
 
 @media print {
-  .sidebar,
-  .topbar,
-  .page-header,
-  .card:not(.stock-sheet-card),
-  #stock-sheet-form,
-  #btn-print-stock-sheet {
+  body.print-stock-sheet .sidebar,
+  body.print-stock-sheet .topbar,
+  body.print-stock-sheet .page-header,
+  body.print-stock-sheet .card:not(.stock-sheet-card),
+  body.print-stock-sheet #stock-sheet-form,
+  body.print-stock-sheet #btn-print-stock-sheet {
     display: none !important;
   }
 
-  .stock-sheet-logo {
+  body.print-stock-sheet .stock-sheet-logo {
     display: block !important;
     width: 72px !important;
     height: 72px !important;
   }
 
-  .stock-sheet-brand {
+  body.print-stock-sheet .stock-sheet-brand {
     align-items: center;
   }
 
-  .content {
+  body.print-stock-sheet .content {
     margin: 0 !important;
     padding: 0 !important;
   }
 
-  .stock-sheet-card {
+  body.print-stock-sheet .stock-sheet-card {
     border: none !important;
     box-shadow: none !important;
+  }
+
+  body.print-stock-sheet .stock-sheet-card .table-wrap {
+    overflow: visible !important;
+  }
+
+  body.print-stock-sheet #stock-sheet-table {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  body.print-stock-sheet #stock-sheet-table th,
+  body.print-stock-sheet #stock-sheet-table td {
+    padding: 6px 8px;
+    font-size: 11px;
+    white-space: normal;
+    word-break: break-word;
   }
 }
 

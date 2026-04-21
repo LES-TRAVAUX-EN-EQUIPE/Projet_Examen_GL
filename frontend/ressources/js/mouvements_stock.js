@@ -293,7 +293,12 @@ stockSheetForm?.addEventListener('change', () => {
 });
 
 printButton?.addEventListener('click', () => {
+  document.body.classList.add('print-stock-sheet');
   window.print();
+});
+
+window.addEventListener('afterprint', () => {
+  document.body.classList.remove('print-stock-sheet');
 });
 
 document.addEventListener('fueltrack:crud-data-loaded', async (event) => {
