@@ -57,8 +57,8 @@ textarea {
   margin: 0 0 16px;
   padding: 12px 14px;
   border-radius: 10px;
-  border: 1px solid #a7e3d0;
-  background: #eafaf4;
+  border: 1px solid rgba(0, 201, 167, 0.24);
+  background: rgba(0, 201, 167, 0.08);
   color: #0a7f6b;
   font-size: 0.95rem;
   font-weight: 700;
@@ -69,14 +69,14 @@ textarea {
 }
 
 .notice-banner.error {
-  border-color: #f3b1b1;
-  background: #fff1f1;
+  border-color: rgba(224, 36, 36, 0.22);
+  background: rgba(224, 36, 36, 0.08);
   color: var(--danger);
 }
 
 .notice-banner.info {
-  border-color: #b8d8f2;
-  background: #eef7ff;
+  border-color: rgba(17, 134, 201, 0.24);
+  background: rgba(17, 134, 201, 0.08);
   color: var(--primary);
 }
 
@@ -93,7 +93,7 @@ body.modal-open {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(12, 25, 45, 0.45);
+  background: rgba(2, 15, 46, 0.45);
   display: none;
   align-items: center;
   justify-content: center;
@@ -108,7 +108,7 @@ body.modal-open {
 .confirm-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(7, 17, 34, 0.52);
+  background: rgba(2, 15, 46, 0.52);
   backdrop-filter: blur(5px);
   display: none;
   align-items: center;
@@ -138,7 +138,7 @@ body.modal-open {
   border-radius: 18px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #ffe5e5, #fff4f4);
+  background: linear-gradient(135deg, rgba(224, 36, 36, 0.14), rgba(224, 36, 36, 0.06));
   color: var(--danger);
   font-size: 22px;
 }

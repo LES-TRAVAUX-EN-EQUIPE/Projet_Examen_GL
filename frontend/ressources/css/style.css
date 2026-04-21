@@ -327,6 +327,109 @@ body.dark-theme .notification-badge {
 h1 { margin: 0 0 16px; font-size: 16px; }
 h2 { margin: 0 0 12px; font-size: 14px; }
 
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.alerts-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.alerts-detail-card {
+  min-height: 100%;
+}
+
+.alerts-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.alerts-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.alerts-status-pill.nouvelle {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.28);
+  color: var(--danger);
+}
+
+.alerts-status-pill.en_cours {
+  background: rgba(17, 134, 201, 0.12);
+  border-color: rgba(17, 134, 201, 0.22);
+  color: var(--primary);
+}
+
+.alerts-status-pill.resolue {
+  background: rgba(0, 201, 167, 0.12);
+  border-color: rgba(0, 201, 167, 0.24);
+  color: #0a7f6b;
+}
+
+.alerts-detail-empty {
+  min-height: 260px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  color: var(--muted);
+  line-height: 1.55;
+  background: linear-gradient(180deg, var(--surface-soft), var(--surface));
+}
+
+.alerts-detail-content {
+  display: grid;
+  gap: 10px;
+}
+
+.alerts-detail-row {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.alerts-detail-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.alerts-detail-value {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.row-selected td {
+  background: rgba(17, 134, 201, 0.08);
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -387,6 +490,12 @@ body.compact-theme .card {
 }
 
 .notice.info { color: var(--primary); }
+
+@media (max-width: 1120px) {
+  .alerts-layout {
+    grid-template-columns: 1fr;
+  }
+}
 
 @media (max-width: 980px) {
   .sidebar {

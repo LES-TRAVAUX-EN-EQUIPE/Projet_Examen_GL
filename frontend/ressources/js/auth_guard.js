@@ -285,6 +285,7 @@ function buildTopbar(user, roleId) {
 
   actualiserBadgeNotifications();
   window.setInterval(actualiserBadgeNotifications, 60000);
+  document.addEventListener('fueltrack:notifications-updated', actualiserBadgeNotifications);
 }
 
 function initResponsiveSidebar() {

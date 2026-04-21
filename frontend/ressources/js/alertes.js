@@ -1,23 +1,231 @@
-﻿import { initialiserPageCrud } from './crud_page.js';
+import { apiRequete } from './api_client.js';
 
-initialiserPageCrud({
-  entity: 'alertes',
-  champs: [
-    { nom: 'type_alerte', libelle: 'Type alerte', type: 'select', required: true, options: ['stock_faible', 'stock_critique', 'retard_livraison', 'anomalie'] },
-    { nom: 'niveau', libelle: 'Niveau', type: 'select', options: ['faible', 'moyen', 'eleve', 'critique'] },
-    { nom: 'depot_id', libelle: 'Dépôt', type: 'select', source: { entity: 'depots', value: 'id', label: 'nom_depot' } },
-    { nom: 'station_id', libelle: 'Station', type: 'select', source: { entity: 'stations', value: 'id', label: 'nom_station' } },
-    { nom: 'type_carburant_id', libelle: 'Carburant', type: 'select', source: { entity: 'types_carburant', value: 'id', label: 'nom_carburant' } },
-    { nom: 'message', libelle: 'Message', type: 'textarea', required: true },
-    { nom: 'statut', libelle: 'Statut', type: 'select', options: ['nouvelle', 'en_cours', 'resolue'] },
-    { nom: 'date_alerte', libelle: 'Date alerte', type: 'datetime-local', required: true },
-    { nom: 'cree_par', libelle: 'Créé par', type: 'select', source: { entity: 'utilisateurs', value: 'id', label: 'nom' } }
-  ],
-  colonnes: [
-    { nom: 'type_alerte', libelle: 'Type' },
-    { nom: 'niveau', libelle: 'Niveau' },
-    { nom: 'message', libelle: 'Message' },
-    { nom: 'statut', libelle: 'Statut' },
-    { nom: 'date_alerte', libelle: 'Date' }
-  ]
-});
+const tableHead = document.getElementById('table-head');
+const tableBody = document.getElementById('table-body');
+const detailBox = document.getElementById('alerts-detail');
+const detailStatus = document.getElementById('detail-status');
+const refreshButton = document.getElementById('btn-refresh-alertes');
+
+let alertes = [];
+let alertesSelectionnee = null;
+const lookups = {
+  depots: [],
+  stations: [],
+  types_carburant: [],
+  utilisateurs: [],
+};
+
+function formatDate(value) {
+  if (!value) return 'Non renseignée';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString('fr-FR');
+}
+
+function formatType(value) {
+  const labels = {
+    stock_faible: 'Stock faible',
+    stock_critique: 'Stock critique',
+    retard_livraison: 'Retard livraison',
+    anomalie: 'Anomalie',
+  };
+  return labels[value] || value || 'Non précisé';
+}
+
+function formatNiveau(value) {
+  const labels = {
+    faible: 'Faible',
+    moyen: 'Moyen',
+    eleve: 'Élevé',
+    critique: 'Critique',
+  };
+  return labels[value] || value || 'Non précisé';
+}
+
+function getLookupLabel(entity, id, key = 'id', label = 'nom') {
+  const rows = lookups[entity] || [];
+  const row = rows.find((item) => String(item[key]) === String(id));
+  return row ? (row[label] ?? '') : '';
+}
+
+function getSiteLabel(alerte) {
+  if (alerte.depot_id) {
+    return `Dépôt: ${getLookupLabel('depots', alerte.depot_id, 'id', 'nom_depot') || alerte.depot_id}`;
+  }
+  if (alerte.station_id) {
+    return `Station: ${getLookupLabel('stations', alerte.station_id, 'id', 'nom_station') || alerte.station_id}`;
+  }
+  return 'Site non précisé';
+}
+
+function getCarburantLabel(alerte) {
+  if (!alerte.type_carburant_id) return 'Carburant non précisé';
+  return getLookupLabel('types_carburant', alerte.type_carburant_id, 'id', 'nom_carburant') || String(alerte.type_carburant_id);
+}
+
+function getCreateurLabel(alerte) {
+  if (!alerte.cree_par) return 'Système';
+  const row = (lookups.utilisateurs || []).find((item) => String(item.id) === String(alerte.cree_par));
+  return row ? `${row.nom || ''} ${row.prenom || ''}`.trim() : String(alerte.cree_par);
+}
+
+function setDetailStatus(statut) {
+  if (!detailStatus) return;
+  detailStatus.textContent = formatNiveau(statut);
+  const classeStatut = String(statut || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-');
+  detailStatus.className = `alerts-status-pill ${classeStatut || 'neutre'}`;
+}
+
+function renderDetail(alerte) {
+  if (!detailBox) return;
+
+  if (!alerte) {
+    detailBox.className = 'alerts-detail-empty';
+    detailBox.textContent = 'Sélectionnez une alerte pour afficher ses informations.';
+    setDetailStatus('Aucune sélection');
+    return;
+  }
+
+  const items = [
+    ['Type', formatType(alerte.type_alerte)],
+    ['Niveau', formatNiveau(alerte.niveau)],
+    ['Statut', alerte.statut || 'Non précisé'],
+    ['Date', formatDate(alerte.date_alerte)],
+    ['Site', getSiteLabel(alerte)],
+    ['Carburant', getCarburantLabel(alerte)],
+    ['Créé par', getCreateurLabel(alerte)],
+    ['Message', alerte.message || ''],
+  ];
+
+  detailBox.className = 'alerts-detail-content';
+  detailBox.innerHTML = items.map(([label, value]) => `
+    <div class="alerts-detail-row">
+      <span class="alerts-detail-label">${label}</span>
+      <span class="alerts-detail-value">${value || 'Non renseigné'}</span>
+    </div>
+  `).join('');
+
+  setDetailStatus(alerte.statut || 'Non précisé');
+}
+
+function renderTable() {
+  if (!tableHead || !tableBody) return;
+
+  tableHead.innerHTML = '';
+  tableBody.innerHTML = '';
+
+  const headerRow = document.createElement('tr');
+  ['Type', 'Niveau', 'Message', 'Statut', 'Date', 'Actions'].forEach((title) => {
+    const th = document.createElement('th');
+    th.textContent = title;
+    headerRow.appendChild(th);
+  });
+  tableHead.appendChild(headerRow);
+
+  if (alertes.length === 0) {
+    const row = document.createElement('tr');
+    const cell = document.createElement('td');
+    cell.colSpan = 6;
+    cell.className = 'empty';
+    cell.textContent = 'Aucune alerte disponible.';
+    row.appendChild(cell);
+    tableBody.appendChild(row);
+    return;
+  }
+
+  alertes.forEach((alerte) => {
+    const row = document.createElement('tr');
+    if (alertesSelectionnee && String(alertesSelectionnee.id) === String(alerte.id)) {
+      row.classList.add('row-selected');
+    }
+
+    const cells = [
+      formatType(alerte.type_alerte),
+      formatNiveau(alerte.niveau),
+      alerte.message || '',
+      alerte.statut || '',
+      formatDate(alerte.date_alerte),
+    ];
+
+    cells.forEach((value) => {
+      const td = document.createElement('td');
+      td.textContent = value;
+      row.appendChild(td);
+    });
+
+    const tdActions = document.createElement('td');
+    tdActions.className = 'actions';
+
+    const btnDetail = document.createElement('button');
+    btnDetail.type = 'button';
+    btnDetail.className = 'btn btn-secondary';
+    btnDetail.textContent = 'Voir détail';
+    btnDetail.addEventListener('click', () => consulterDetail(alerte));
+
+    tdActions.appendChild(btnDetail);
+    row.appendChild(tdActions);
+    tableBody.appendChild(row);
+  });
+}
+
+async function chargerLookups() {
+  const [depots, stations, typesCarburant, utilisateurs] = await Promise.all([
+    apiRequete('depots'),
+    apiRequete('stations'),
+    apiRequete('types_carburant'),
+    apiRequete('utilisateurs'),
+  ]);
+
+  lookups.depots = depots;
+  lookups.stations = stations;
+  lookups.types_carburant = typesCarburant;
+  lookups.utilisateurs = utilisateurs;
+}
+
+async function chargerAlertes() {
+  alertes = await apiRequete('alertes');
+
+  if (alertesSelectionnee) {
+    const miseAJour = alertes.find((alerte) => String(alerte.id) === String(alertesSelectionnee.id));
+    if (miseAJour) {
+      alertesSelectionnee = miseAJour;
+      renderDetail(alertesSelectionnee);
+    }
+  }
+
+  renderTable();
+}
+
+async function consulterDetail(alerte) {
+  const detail = await apiRequete('alertes', 'POST', null, { action: 'consulter', id: alerte.id });
+  alertesSelectionnee = detail;
+  renderDetail(detail);
+  await chargerAlertes();
+  document.dispatchEvent(new CustomEvent('fueltrack:notifications-updated', {
+    detail: {
+      entity: 'alertes',
+      id: detail.id,
+    },
+  }));
+}
+
+if (refreshButton) {
+  refreshButton.addEventListener('click', async () => {
+    refreshButton.disabled = true;
+    try {
+      await chargerAlertes();
+    } finally {
+      refreshButton.disabled = false;
+    }
+  });
+}
+
+(async function init() {
+  renderDetail(null);
+  await chargerLookups();
+  await chargerAlertes();
+})();

@@ -13,42 +13,48 @@
     <aside class="sidebar">
       <h2 class="brand">FuelTrack</h2>
       <a class="nav-link" href="tableau_de_bord.html">Tableau de bord</a>
-<a class="nav-link" href="utilisateurs.html">Utilisateurs</a>
-<a class="nav-link" href="fournisseurs.html">Fournisseurs</a>
-<a class="nav-link" href="depots.html">Dépôts</a>
-<a class="nav-link" href="stations.html">Stations</a>
-<a class="nav-link" href="vehicules.html">Véhicules</a>
-<a class="nav-link" href="types_carburant.html">Types carburant</a>
-<a class="nav-link" href="approvisionnements.html">Approvisionnements</a>
-<a class="nav-link" href="livraisons.html">Livraisons</a>
-<a class="nav-link" href="mouvements_stock.html">Mouvements stock</a>
-<a class="nav-link active" href="alertes.html">Alertes</a>
-<a class="nav-link" href="rapports.html">Rapports</a>
-</aside>
+      <a class="nav-link" href="utilisateurs.html">Utilisateurs</a>
+      <a class="nav-link" href="fournisseurs.html">Fournisseurs</a>
+      <a class="nav-link" href="depots.html">Dépôts</a>
+      <a class="nav-link" href="stations.html">Stations</a>
+      <a class="nav-link" href="vehicules.html">Véhicules</a>
+      <a class="nav-link" href="types_carburant.html">Types carburant</a>
+      <a class="nav-link" href="approvisionnements.html">Approvisionnements</a>
+      <a class="nav-link" href="livraisons.html">Livraisons</a>
+      <a class="nav-link" href="mouvements_stock.html">Mouvements stock</a>
+      <a class="nav-link active" href="alertes.html">Alertes</a>
+      <a class="nav-link" href="rapports.html">Rapports</a>
+    </aside>
 
     <main class="content">
       <div class="page-header">
         <h1>Gestion des alertes</h1>
+        <button class="btn btn-secondary" type="button" id="btn-refresh-alertes">Rafraîchir</button>
       </div>
 
       <section class="card">
-        <form id="crud-form">
-          <div id="form-body" class="form-grid"></div>
-          <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Enregistrer</button>
-            <button class="btn btn-secondary" id="btn-reset" type="button">Réinitialiser</button>
-          </div>
-          <p id="notice" class="notice"></p>
-        </form>
+        <p class="notice info">Les alertes sont générées automatiquement selon les seuils de stock. La consultation d’un détail marque l’alerte comme vue et retire la notification du badge.</p>
       </section>
 
-      <section class="card" style="margin-top: 16px;">
-        <div class="table-wrap">
-          <table>
-            <thead id="table-head"></thead>
-            <tbody id="table-body"></tbody>
-          </table>
-        </div>
+      <section class="alerts-layout">
+        <section class="card alerts-list-card">
+          <div class="table-wrap">
+            <table>
+              <thead id="table-head"></thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card alerts-detail-card">
+          <div class="alerts-detail-head">
+            <h2>Détail de l’alerte</h2>
+            <span id="detail-status" class="alerts-status-pill">Aucune sélection</span>
+          </div>
+          <div id="alerts-detail" class="alerts-detail-empty">
+            Sélectionnez une alerte pour afficher ses informations.
+          </div>
+        </section>
       </section>
     </main>
   </div>

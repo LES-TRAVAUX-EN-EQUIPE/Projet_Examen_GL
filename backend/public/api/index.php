@@ -789,7 +789,7 @@ function executerDashboard(PDO $pdo): void
         'vehicules' => (int) $pdo->query('SELECT COUNT(*) FROM vehicules')->fetchColumn(),
         'approvisionnements' => (int) $pdo->query('SELECT COUNT(*) FROM approvisionnements')->fetchColumn(),
         'livraisons' => (int) $pdo->query('SELECT COUNT(*) FROM livraisons')->fetchColumn(),
-        'alertes_ouvertes' => (int) $pdo->query("SELECT COUNT(*) FROM alertes WHERE statut <> 'resolue'")->fetchColumn(),
+        'alertes_ouvertes' => (int) $pdo->query("SELECT COUNT(*) FROM alertes WHERE statut = 'nouvelle'")->fetchColumn(),
     ];
 
     $stocksDepots = $pdo->query(
@@ -1850,7 +1850,13 @@ try {
         if ($roleId <= 0) {
             reponseErreur('Authentification requise.', 401);
         }
-        verifierAutorisationRole($entity, $_SERVER['REQUEST_METHOD'], $roleId);
+
+        $methodeAutorisation = $_SERVER['REQUEST_METHOD'];
+        if ($entity === 'alertes' && $methodeAutorisation === 'POST' && (($_GET['action'] ?? '') === 'consulter')) {
+            $methodeAutorisation = 'GET';
+        }
+
+        verifierAutorisationRole($entity, $methodeAutorisation, $roleId);
     }
 
     if ($entity === 'dashboard') {
@@ -1885,6 +1891,36 @@ try {
         executerAjustementsStockStations($pdo);
     }
 
+    $methode = $_SERVER['REQUEST_METHOD'];
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
+
+    if ($entity === 'alertes' && $methode === 'POST' && (($_GET['action'] ?? '') === 'consulter')) {
+        $idAlerte = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        if ($idAlerte <= 0) {
+            reponseErreur('Paramètre id requis pour consulter une alerte.', 400);
+        }
+
+        $stmtAlerte = $pdo->prepare('SELECT * FROM alertes WHERE id = :id LIMIT 1');
+        $stmtAlerte->execute(['id' => $idAlerte]);
+        $alerte = $stmtAlerte->fetch();
+
+        if (!$alerte) {
+            reponseErreur('Alerte introuvable.', 404);
+        }
+
+        if (($alerte['statut'] ?? '') === 'nouvelle') {
+            $stmtMarquerVue = $pdo->prepare("UPDATE alertes SET statut = 'en_cours' WHERE id = :id");
+            $stmtMarquerVue->execute(['id' => $idAlerte]);
+            $alerte['statut'] = 'en_cours';
+        }
+
+        reponseSucces(nettoyerDonneesSensibles($entity, $alerte));
+    }
+
+    if ($entity === 'alertes' && in_array($methode, ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
+        reponseErreur('Les alertes sont gérées automatiquement et ne peuvent pas être modifiées manuellement.', 405);
+    }
+
     if (!isset($definitions[$entity])) {
         reponseErreur('Entité non supportée.', 404);
     }
@@ -1893,8 +1929,6 @@ try {
     $table = $definition['table'];
     $champs = $definition['champs'];
     $obligatoires = $definition['obligatoires'];
-    $methode = $_SERVER['REQUEST_METHOD'];
-    $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
     if ($methode === 'GET') {
         if ($id) {
