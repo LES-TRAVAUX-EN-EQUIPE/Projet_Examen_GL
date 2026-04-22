@@ -197,3 +197,237 @@ Le dashboard a pour objectif de :
 - Améliorer la gestion des ressources (carburant, logistique, finances)
 - Permettre un accès rapide aux différentes fonctionnalités du système
 - Assurer un suivi efficace et sécurisé de toute la chaîne d’approvisionnement
+
+## 4. Captures restantes - Administration (modules detaillees)
+
+Les captures suivantes montrent les pages metier accessibles dans l'espace administrateur, au-dela du dashboard general.
+
+- Dashboard_Admin_Alertes.png
+Montre la page de suivi des alertes (stock faible, stock critique, anomalies). L'administrateur y consulte le niveau de gravite, le statut de traitement et la date de detection.
+
+- Dashboard_Admin_Approvisionnement.png
+Presente la gestion des approvisionnements carburant: enregistrement des receptions, quantites, couts unitaires, reference d'operation et statut.
+
+- Dashboard_Admin_Clients.png
+Affiche le registre des clients (identite, contacts, statut), utile pour la tracabilite des ventes station et le suivi commercial.
+
+- Dashboard_Admin_Depots.png
+Montre la liste des depots avec leurs informations principales (code, localisation, capacite, responsable, statut).
+
+- Dashboard_Admin_Depots_suite.png
+Capture complementaire du module depots (suite des donnees, actions CRUD et gestion detaillee des enregistrements).
+
+- Dashboard_Admin_Dettes.png
+Presente le suivi des dettes clients: montant du reste a payer, statut de remboursement et historique associe aux ventes.
+
+- Dashboard_Admin_Fournisseurs.png
+Montre la gestion des fournisseurs (identification, type, contact, statut), indispensable pour la chaine d'approvisionnement.
+
+- Dashboard_Admin_Livraison.png
+Affiche les livraisons entre depots et stations: references, vehicules, quantites, dates de depart/arrivee et statut logistique.
+
+- Dashboard_Admin_MouvementStock.png
+Montre la table des mouvements de stock (entree depot, sortie depot, entree station, sortie station) avec references et quantites.
+
+- Dashboard_Admin_MouvementStock_suite.png
+Capture de continuation du meme module pour illustrer d'autres mouvements et la consultation de l'historique complet.
+
+- Dashboard_Admin_Parametres.png
+Presente la page de parametres du compte/admin (profil, informations personnelles et options de configuration utilisateur).
+
+- Dashboard_Admin_Parametres_suite.png
+Montre la suite des parametres (sections additionnelles de personnalisation, mises a jour du compte et preferences).
+
+- Dashboard_Admin_Rapport.png
+Affiche la page de rapports et statistiques globales, avec syntheses des approvisionnements, livraisons et alertes.
+
+- Dashboard_Admin_Station.png
+Montre la gestion des stations-service (code station, localisation, capacite, responsable et statut).
+
+- Dashboard_Admin_Station_suite.png
+Capture complementaire du module stations (suite de la liste et operations de gestion).
+
+- Dashboard_Admin_Tarif_station.png
+Presente la configuration des prix/tarifs carburant par station et par type de carburant.
+
+- Dashboard_Admin_Taux_change.png
+Montre la gestion des taux de change (USD/CDF) appliques par station pour les ventes et calculs financiers.
+
+- Dashboard_Admin_TypeCarburan.png
+Affiche la gestion des types de carburant (designation, unite, description), base de reference pour tous les modules metier.
+
+- Dashboard_Admin_Utilisateurs.png
+Montre l'administration des utilisateurs (creation, roles, statut actif/inactif, edition des comptes).
+
+- Dashboard_Admin_Vehicules.png
+Presente la gestion du parc vehicules (immatriculation, capacite, chauffeur, statut disponible/en mission).
+
+- Dashboard_Admin_Vente.png
+Affiche la page de ventes station avec enregistrement des transactions, client, produit et montant.
+
+- Dashboard_Admin_Vente_suite_1.png
+Capture de suite illustrant des details supplementaires de ventes (historique, filtres, informations financieres).
+
+- Dashboard_Admin_Vente_suite_2.png
+Deuxieme suite du module ventes, mettant en evidence la consultation approfondie des operations et paiements.
+
+## 5. Captures restantes - Gestionnaire de stock
+
+Ces captures presentent les fonctionnalites visibles pour le role Gestionnaire de stock.
+
+- Dashboard_GestionnaireStock.png
+Montre le dashboard principal du gestionnaire, centre sur les indicateurs de stock et de suivi operationnel.
+
+- Dashboard_GestionnaireStock_Alertes.png
+Affiche les alertes de stock a traiter en priorite pour anticiper les ruptures dans depots et stations.
+
+- Dashboard_GestionnaireStock_Approvisionnement.png
+Presente le suivi des approvisionnements, notamment les receptions et l'impact sur les quantites disponibles.
+
+- Dashboard_GestionnaireStock_Depots.png
+Montre la consultation et la gestion des depots sous l'angle stock (capacites, niveaux, organisation).
+
+- Dashboard_GestionnaireStock_Dettes.png
+Affiche la vue des dettes clients pour relier la situation financiere aux operations de distribution.
+
+- Dashboard_GestionnaireStock_Fournisseur.png
+Montre la consultation des fournisseurs et des informations liees a la disponibilite des carburants.
+
+- Dashboard_GestionnaireStock_MouvementStock.png
+Presente l'historique des mouvements de stock, outil principal de controle et de reconciliation.
+
+- Dashboard_GestionnaireStock_Parametres.png
+Affiche les parametres du compte gestionnaire (profil, donnees utilisateur, reglages).
+
+- Dashboard_GestionnaireStock-Rapports.png
+Montre la page de rapports orientee stock: syntheses par produit, volume et evolution des operations.
+
+- Dashboard_GestionnaireStock-TarifStation.png
+Affiche la consultation des tarifs de vente par station, utile pour la coherence entre stock et commercial.
+
+- Dashboard_GestionnaireStock_Taux_change.png
+Montre les taux de change utilises dans les calculs de prix et le suivi des ventes.
+
+- Dashboard_GestionnaireStock_TypeCarburant.png
+Affiche les types de carburant geres dans le systeme avec leurs references metier.
+
+- Dashboard_GestionnaireStock_VenteStation.png
+Presente les ventes station observees par le gestionnaire pour relier sorties de stock et transactions.
+
+- Dashboard_GestionnaireStocke_Clients.png
+Montre la page clients (orthographe du fichier conservee) pour la consultation des informations commerciales.
+
+## 6. Captures restantes - Responsable logistique
+
+Ces captures montrent le perimetre du role Responsable logistique, axe sur transport et distribution.
+
+- Dashboard_Responsable_logistique.png
+Dashboard principal du responsable logistique avec indicateurs de livraisons, vehicules et flux.
+
+- Dashboard_Responsable_logistique_Alertes.png
+Vue des alertes impactant les operations logistiques (retards, risques de rupture, anomalies).
+
+- Dashboard_Responsable_logistique_Clients.png
+Consultation des clients pour coordonner la distribution et le suivi de service.
+
+- Dashboard_Responsable_logistique_Depots.png
+Vue depots pour planifier les sorties et optimiser les trajets de livraison.
+
+- Dashboard_Responsable_logistique_Dettes.png
+Suivi des dettes en lien avec la logistique commerciale et les livraisons effectuees.
+
+- Dashboard_Responsable_logistique_Livraison.png
+Module central du role: planification, execution et suivi des livraisons avec statut.
+
+- Dashboard_Responsable_logistique_Paramettres.png
+Page parametres du responsable logistique (nom du fichier conserve avec sa graphie actuelle).
+
+- Dashboard_Responsable_logistique_Rapports.png
+Rapports logistiques: performances de livraison, volumes transportes et tendances.
+
+- Dashboard_Responsable_logistique_Station.png
+Consultation des stations desservies pour organiser les affectations de livraison.
+
+- Dashboard_Responsable_logistique_TarifStation.png
+Vue des tarifs station utiles pour la coordination entre service logistique et vente.
+
+- Dashboard_Responsable_logistique_Taux_change.png
+Consultation des taux de change appliques aux transactions associees aux livraisons.
+
+- Dashboard_Responsable_logistique_Vehicules.png
+Gestion/consultation des vehicules disponibles pour les missions logistiques.
+
+## 7. Captures restantes - Responsable station
+
+Ces captures presentent l'espace du Responsable de station, concentre sur exploitation locale.
+
+- Dashboard_Responsable_station.png
+Dashboard principal de station avec indicateurs de vente, stock local et alertes courantes.
+
+- Dashboard_Responsable_station_suite.png
+Suite de la vue dashboard station (informations et widgets complementaires).
+
+- Dashboard_Responsable_station_Alertes.png
+Alertes de la station (seuils critiques, anomalies locales) pour intervention rapide.
+
+- Dashboard_Responsable_station_clients.png
+Gestion/consultation des clients de la station et des donnees de contact.
+
+- Dashboard_Responsable_station_Dettes.png
+Suivi des dettes clients au niveau station pour le recouvrement et la tresorerie.
+
+- Dashboard_Responsable_station_Parametres.png
+Parametres du compte responsable station.
+
+- Dashboard_Responsable_station_Rapports.png
+Rapports de station (ventes, volumes, evolution et tendances locales).
+
+- Dashboard_Responsable_station_Station.png
+Consultation des informations de la station et donnees operationnelles associees.
+
+- Dashboard_Responsable_station_Tarif.png
+Gestion/consultation des tarifs carburant appliques dans la station.
+
+- Dashboard_Responsable_station_Taux_change.png
+Affiche les taux de change utilises pour les ventes en monnaies differentes.
+
+- Dashboard_Responsable_Vente.png
+Module de vente station (saisie de transaction, client, produit, montant, paiement).
+
+## 8. Captures restantes - Responsable livraison
+
+- Dashboard_Responsable_Livraison.png
+Montre l'interface dediee au suivi des livraisons (etat de mission, progression, validation).
+
+- Dashboard_Responsable_Livraison_Vente.png
+Capture mettant en relation livraisons et ventes, utile pour verifier la coherence operation-finance.
+
+## 9. Captures restantes - Superviseur
+
+Ces captures representent les vues de controle du role Superviseur, oriente audit et pilotage.
+
+- Dashboard_Superviseur.png
+Dashboard global du superviseur avec indicateurs de suivi transversal.
+
+- Dashboard_Superviseur_Alertes.png
+Vue des alertes systeme pour supervision des incidents et priorisation des actions.
+
+- Dashboard_Superviseur_Dettes.png
+Suivi des dettes pour controle de performance financiere et risque client.
+
+- Dashboard_Superviseur_Parametres.png
+Page parametres du compte superviseur.
+
+- Dashboard_Superviseur_Rapport.png
+Espace rapports pour lecture decisionnelle et suivi des performances globales.
+
+- Dashboard_Superviseur_vente.png
+Vue de supervision des ventes pour verifier volumes, montants et tendances.
+
+## 10. Conclusion des captures restantes
+
+Les captures restantes confirment que l'application couvre:
+
+- Une separation claire des interfaces par role (Administrateur, Gestionnaire de stock, Responsable logistique, Responsable station, Responsable livraison, Superviseur).
+- Une couverture complete des modules metier (utilisateurs, fournisseurs, depots, stations, vehicules, approvisionnements, livraisons, mouvements de stock, ventes, dettes, alertes, rapports, parametres).
+- Une logique de tracabilite de bout en bout, depuis l'entree en stock jusqu'a la vente finale.
