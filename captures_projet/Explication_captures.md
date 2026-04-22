@@ -91,3 +91,109 @@ Cette page joue un rôle essentiel dans la sécurité du système car elle perme
 - Contrôler l’accès aux données sensibles de la chaîne d’approvisionnement
 - Garantir que seuls les utilisateurs autorisés puissent utiliser l’application
 - Assurer une authentification fiable avant toute utilisation des fonctionnalités avancées
+
+# 3. Dashboard Administrateur
+
+# Description du Dashboard Administrateur (dashboard_admin_01 à dashboard_admin_04)
+
+Après la vérification des identifiants sur la page de connexion, le système identifie le rôle de l’utilisateur. Si l’utilisateur est reconnu comme administrateur il est automatiquement redirigé vers une interface dédiée appelée Dashboard Administrateur.
+Ce tableau de bord constitue le centre de contrôle principal de l’application et permet une gestion globale, en temps réel, de la chaîne d’approvisionnement en carburant.
+
+# Organisation générale de l’interface
+
+Le dashboard est structuré autour de trois grandes zones :
+
+# a. Barre de navigation supérieure (Top Navbar)
+
+Située en haut de l’écran, cette barre fournit des informations essentielles ainsi que des actions rapides :
+- Un titre Espace Admin indiquant clairement le niveau d’accès
+- Une icône de notification permettant d’alerter l’administrateur sur les événements importants (alertes, anomalies, etc.)
+- Une icône de basculement Dark Mode permettant de changer le thème visuel de l’interface
+- Une section profil utilisateur affichant : le nom (ex : Admin Système) et le rôle (Administrateur)
+- Un bouton Se déconnecter pour quitter la session de manière sécurisée
+
+# b. Barre latérale gauche (Sidebar)
+
+La barre latérale constitue le menu principal de navigation. Elle est composée de boutons avec sous-menus (sous-boutons) permettant d’accéder aux différents modules du système.
+Parmi les sections disponibles, on retrouve notamment :
+- Tableau de bord
+- Acteurs
+- Infrastructure
+- Operations
+- Pilotage
+Cette organisation hiérarchique permet une navigation fluide et structurée dans l’ensemble de l’application.
+
+# c. Contenu principal du Dashboard
+
+Le contenu central du dashboard (réparti sur dashboard_admin_01 à dashboard_admin_04) regroupe plusieurs composants analytiques et informatifs.
+
+# - Panneaux indicateurs (Statistiques globales)
+
+Une série de cartes (panels) affiche les principaux indicateurs du système :
+Nombre d’utilisateurs
+Nombre de fournisseurs
+Nombre de dépôts
+Nombre de stations
+Nombre de véhicules
+Nombre d’approvisionnements
+Nombre de livraisons
+Nombre d’alertes ouvertes
+Nombre de dettes clients
+
+a noter que Chaque panneau est cliquable et redirige l’administrateur vers la page correspondante pour plus de détails.
+
+# - Graphiques d’analyse
+
+Plusieurs graphiques permettent de visualiser les données de manière dynamique :
+
+Répartition des stocks faibles : identification rapide des dépôts en difficulté
+Livraisons par statut : (en cours / livrées)
+Situation des dettes clients : suivi financier
+Alertes par niveau : classification des urgences
+Volumes approvisionnés : évolution des quantités reçues
+Ces graphiques facilitent la prise de décision stratégique.
+
+# c. Panneau d’actions rapides
+
+Ce panel permet d’exécuter des actions importantes en un seul clic :
+- Boutton Accéder directement à la page des dettes clients
+- Bouton Réinitialiser les filtres pour actualiser les données affichées
+
+# d. Suivi des stocks (Dépôts)
+
+Un tableau présente les stocks critiques dans les dépôts avec les colonnes suivantes :
+- Dépôt
+- Type de carburant
+- Quantité disponible
+- Seuil minimum
+Permet d’anticiper les ruptures de stock
+
+# e. Livraisons récentes
+
+Un tableau affiche les dernières opérations de livraison avec les colonnes suivantes :
+- Référence
+- Dépôt
+- Station
+- Quantité
+- Statut (en cours ou livrée)
+Offre une visibilité immédiate sur les activités logistiques
+
+# f. Profil utilisateur actuel
+
+Un encadré présente les informations de l’administrateur connecté :
+- Nom
+- Rôle
+- Adresse email
+
+# g. Derniers indicateurs
+
+Cette section regroupe les données récentes par rapport au volume du type de carburant permettant à l’administrateur de rester informé en temps réel sur l’état global du carburant
+
+# Objectif du Dashboard Administrateur
+
+Le dashboard a pour objectif de :
+- Centraliser toutes les informations importantes
+- Faciliter la prise de décision grâce aux indicateurs visuels
+- Améliorer la gestion des ressources (carburant, logistique, finances)
+- Permettre un accès rapide aux différentes fonctionnalités du système
+- Assurer un suivi efficace et sécurisé de toute la chaîne d’approvisionnement
