@@ -53,3 +53,41 @@ L’objectif principal de cette landing page est de :
 - Faciliter la navigation entre les sections
 - Donner une vue globale du projet avant authentification
 - Guider l’utilisateur vers la connexion pour accéder aux fonctionnalités avancées
+
+# 2. Login_Authentification
+
+# Description de la page de connexion
+
+La page de connexion constitue le point d’accès sécurisé à l’application de suivi de la chaîne d’approvisionnement en carburant. Elle est conçue de manière simple, moderne et ergonomique afin de faciliter l’authentification des utilisateurs autorisés.
+
+# Structure de la page
+
+La page est divisée en deux parties principales :
+
+# a. Partie gauche (Logo)
+
+Sur la partie gauche de l’écran, on retrouve le logo de l’application. Ce logo joue un rôle visuel important car il permet d’identifier rapidement le système et de renforcer l’identité du projet.
+
+# b. Partie droite (Formulaire de connexion)
+
+La partie droite contient le formulaire de connexion structuré comme suit :
+
+- Un titre Connexion indiquant clairement l’objectif de la page
+- Une zone de texte pour l’adresse email
+- Une zone de texte pour le mot de passe
+- Un bouton principal Se connecter permettant de soumettre les identifiants
+- Un bouton secondaire Retour à la page d’accueil permettant de revenir à la landing page sans authentification
+
+# c. Fonctionnement du système d’authentification
+
+Lorsque l’utilisateur saisit ses identifiants et clique sur le bouton Se connecter, le système effectue une vérification automatique :
+
+- Si les identifiants sont corrects, l’utilisateur est authentifié et redirigé vers l’interface principale du système (dashboard ou tableau de bord).
+- Si les identifiants sont incorrects, l’accès est refusé et un message d’erreur est affiché invitant l’utilisateur à vérifier ses informations et à réessayer.
+
+# d. Rôle de la page de connexion
+
+Cette page joue un rôle essentiel dans la sécurité du système car elle permet de :
+- Contrôler l’accès aux données sensibles de la chaîne d’approvisionnement
+- Garantir que seuls les utilisateurs autorisés puissent utiliser l’application
+- Assurer une authentification fiable avant toute utilisation des fonctionnalités avancées
