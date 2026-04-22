@@ -2,6 +2,8 @@
 <img width="1366" height="768" alt="issue_close" src="https://github.com/user-attachments/assets/6d4ba5e9-2cd7-4175-af89-696e70d9dd39" />
 <img width="1365" height="767" alt="issue_02" src="https://github.com/user-attachments/assets/76ed363e-5b2d-4b9d-b5ad-77680b226d17" />
 <img width="1365" height="767" alt="issue_01" src="https://github.com/user-attachments/assets/659fec9a-f64c-419a-abfd-95d4d6774c27" />
+<img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/6bb7e33a-ddfc-4497-82fa-db1ebe5734b4" />
+
 # Instructions de travail en equipe - Projet Examen GL (FuelTrack)
 
 ## 1. Objectif du document
