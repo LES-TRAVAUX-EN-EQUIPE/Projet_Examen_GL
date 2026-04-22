@@ -84,7 +84,7 @@ Examen_GL/
 - La structure ci-dessus reflete l'etat actuel du depot.
 
 # Documentation du Schéma de Base de Données  
-
+<img width="1714" height="1296" alt="fueltrack_nord_kivu" src="https://github.com/user-attachments/assets/9e83117c-75d6-4a49-bf18-13303438f5c0" />
 ## 1. Vue d’ensemble
 
 Ce projet représente un système complet de gestion de carburant permettant de gérer :
