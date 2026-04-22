@@ -105,7 +105,5 @@ Cette methode basee sur des issues assignees a permis:
 
 ## 8. Recommandations finales pour cloturer proprement
 
-1. Fermer les issues deja terminees avec un commentaire de preuve (captures, fichiers modifies, tests realises).
-2. Completer documentation/preuves_travail_equipe.md avec les liens vers commits/PR/captures par issue.
-3. Ajouter un court bilan par membre dans rapport_travail_effectue.md pour faciliter la defense du projet.
+Ajouter un court bilan par membre dans rapport_travail_effectue.md pour faciliter la defense du projet.
 
