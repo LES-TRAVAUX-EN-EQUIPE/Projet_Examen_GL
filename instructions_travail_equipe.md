@@ -3,6 +3,7 @@
 <img width="1365" height="767" alt="issue_02" src="https://github.com/user-attachments/assets/76ed363e-5b2d-4b9d-b5ad-77680b226d17" />
 <img width="1365" height="767" alt="issue_01" src="https://github.com/user-attachments/assets/659fec9a-f64c-419a-abfd-95d4d6774c27" />
 <img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/6bb7e33a-ddfc-4497-82fa-db1ebe5734b4" />
+<img width="1365" height="765" alt="image" src="https://github.com/user-attachments/assets/f7c652b3-7c7e-4218-8c99-9dd3ed39c5d6" />
 
 # Instructions de travail en equipe - Projet Examen GL (FuelTrack)
 
