@@ -244,7 +244,7 @@ function obtenirOuInitialiserStockStation(PDO $pdo, int $stationId, int $typeCar
             'type_carburant_id' => $typeCarburantId,
         ]);
         $row = $stmtMouvements->fetch();
-        $quantiteCalculee = max((float) ($row['stock_calcule'] ?? 0), 0);       
+        $quantiteCalculee = max((float) ($row['stock_calcule'] ?? 0), 0);
 
         if (abs($quantiteCalculee - (float) $stock['quantite_disponible']) > 0.0001) {
             $stmtUpdate = $pdo->prepare(
@@ -638,7 +638,7 @@ function synchroniserImpactApprovisionnement(PDO $pdo, ?array $ancien, array $no
             $pdo,
             (int) $ancien['depot_id'],
             (int) $ancien['type_carburant_id'],
-            -((float) $ancien['quantite'])
+            - ((float) $ancien['quantite'])
         );
         synchroniserAlertesStockDepot($pdo, (int) $ancien['depot_id'], (int) $ancien['type_carburant_id'], $userId);
 
@@ -695,7 +695,7 @@ function synchroniserImpactLivraison(PDO $pdo, ?array $ancien, array $nouveau, i
             $pdo,
             (int) $ancien['station_id'],
             (int) $ancien['type_carburant_id'],
-            -((float) $ancien['quantite'])
+            - ((float) $ancien['quantite'])
         );
         synchroniserAlertesStockDepot($pdo, (int) $ancien['depot_id'], (int) $ancien['type_carburant_id'], $userId);
         synchroniserAlertesStockStation($pdo, (int) $ancien['station_id'], (int) $ancien['type_carburant_id'], $userId);
@@ -709,7 +709,7 @@ function synchroniserImpactLivraison(PDO $pdo, ?array $ancien, array $nouveau, i
             $pdo,
             (int) $nouveau['depot_id'],
             (int) $nouveau['type_carburant_id'],
-            -((float) $nouveau['quantite'])
+            - ((float) $nouveau['quantite'])
         );
 
         ajusterStockStation(
@@ -1997,8 +1997,10 @@ try {
 
                 $existe = false;
                 foreach ($rows as $row) {
-                    if ((string) ((int) $row['station_id']) === (string) ((int) $mouvementRow['station_id'])
-                        && (string) ((int) $row['type_carburant_id']) === (string) ((int) $mouvementRow['type_carburant_id'])) {
+                    if (
+                        (string) ((int) $row['station_id']) === (string) ((int) $mouvementRow['station_id'])
+                        && (string) ((int) $row['type_carburant_id']) === (string) ((int) $mouvementRow['type_carburant_id'])
+                    ) {
                         $existe = true;
                         break;
                     }
