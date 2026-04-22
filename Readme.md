@@ -83,12 +83,9 @@ Examen_GL/
 - Les documents de projet ont ete completes dans `documentation/`.
 - La structure ci-dessus reflete l'etat actuel du depot.
 
-# 📘 Documentation du Schéma de Base de Données  
-## Système de gestion de carburant
-<img src="./captures_projet/fueltrack_nord_kivu_052716.png">
----
+# Documentation du Schéma de Base de Données  
 
-## 🧩 1. Vue d’ensemble
+## 1. Vue d’ensemble
 
 Ce projet représente un système complet de gestion de carburant permettant de gérer :
 
@@ -103,12 +100,12 @@ Ce projet représente un système complet de gestion de carburant permettant de 
 - les utilisateurs et rôles  
 - les clients et fournisseurs  
 
-### 🎯 Objectif
+### Objectif
 Assurer le suivi complet du carburant depuis le fournisseur jusqu’au client final.
 
 ---
 
-## 🛢️ 2. Gestion des carburants
+## 2. Gestion des carburants
 
 ### Table : `types_carburant`
 
@@ -123,7 +120,7 @@ Contient les différents types de carburant.
 
 ---
 
-## ⛽ 3. Stations-service
+## 3. Stations-service
 
 ### Table : `stations`
 
@@ -141,7 +138,7 @@ Représente les stations de distribution.
 
 ---
 
-## 🏭 4. Dépôts
+## 4. Dépôts
 
 ### Table : `depots`
 
@@ -158,7 +155,7 @@ Représente les dépôts de stockage.
 
 ---
 
-## 🚚 5. Approvisionnements
+## 5. Approvisionnements
 
 ### Table : `approvisionnements`
 
@@ -175,12 +172,12 @@ Représente l’achat de carburant auprès des fournisseurs.
 - `cout_total`
 - `date_approvisionnement`
 
-### 🔁 Flux :
-Fournisseur → Dépôt
+### Flux :
+Fournisseur : Dépôt
 
 ---
 
-## 🚛 6. Livraisons
+## 6. Livraisons
 
 ### Table : `livraisons`
 
@@ -196,12 +193,12 @@ Représente le transport de carburant.
 - `date_depart`
 - `date_arrivee`
 
-### 🔁 Flux :
-Dépôt → Station
+### Flux :
+Dépôt : Station
 
 ---
 
-## 🚗 7. Véhicules
+## 7. Véhicules
 
 ### Table : `vehicules`
 
@@ -216,7 +213,7 @@ Dépôt → Station
 
 ---
 
-## 📦 8. Gestion des stocks
+## 8. Gestion des stocks
 
 ### Table : `stocks_depots`
 Stock dans les dépôts.
@@ -232,7 +229,7 @@ Stock dans les stations.
 
 ---
 
-## 🔄 9. Mouvements de stock
+## 9. Mouvements de stock
 
 ### Table : `mouvements_stock`
 
@@ -250,7 +247,7 @@ Historique des opérations.
 
 ---
 
-## 💰 10. Prix et taux de change
+## 10. Prix et taux de change
 
 ### Table : `prix_carburants`
 Prix par station.
@@ -260,7 +257,7 @@ Taux USD ↔ CDF.
 
 ---
 
-## 🛒 11. Ventes
+## 11. Ventes
 
 ### Table : `ventes_station`
 
@@ -280,12 +277,12 @@ Représente les ventes aux clients.
 - `montant_paye`
 - `date_vente`
 
-### 🔁 Flux :
-Station → Client
+### Flux :
+Station : Client
 
 ---
 
-## 👤 12. Clients
+## 12. Clients
 
 ### Table : `clients`
 
@@ -298,7 +295,7 @@ Station → Client
 
 ---
 
-## 🏢 13. Fournisseurs
+## 13. Fournisseurs
 
 ### Table : `fournisseurs`
 
@@ -313,7 +310,7 @@ Station → Client
 
 ---
 
-## 🚨 14. Alertes
+## 14. Alertes
 
 ### Table : `alertes`
 
@@ -330,7 +327,7 @@ Permet de gérer les alertes.
 
 ---
 
-## 👥 15. Utilisateurs et rôles
+## 15. Utilisateurs et rôles
 
 ### Table : `utilisateurs`
 
@@ -351,7 +348,7 @@ Permet de gérer les alertes.
 
 ---
 
-## 🔗 16. Relations principales
+## 16. Relations principales
 
 - Un carburant est utilisé dans plusieurs tables  
 - Un dépôt possède plusieurs stocks  
@@ -361,7 +358,7 @@ Permet de gérer les alertes.
 
 ---
 
-## 🔄 17. Flux global du système
+## 17. Flux global du système
 
 ### 1. Approvisionnement
 Fournisseur → Dépôt
@@ -374,7 +371,7 @@ Station → Client
 
 ---
 
-## 📊 18. Objectifs du système
+## 18. Objectifs du système
 
 - Suivi des stocks en temps réel  
 - Gestion des flux de carburant  
@@ -384,7 +381,7 @@ Station → Client
 
 ---
 
-## ✅ 19. Avantages
+## 19. Avantages
 
 - Architecture claire et modulaire  
 - Facilité d’extension  
@@ -392,14 +389,14 @@ Station → Client
 - Adapté aux entreprises de distribution de carburant  
 
 ---
-Voici le lien d’accès à notre application (interface frontend) :
+Voici le lien d’accès à notre application qui est heberge sur internet :
 
-👉 [FuelTrack Groupe 1](https://fueltrackgroupe1.byethost16.com)
+[FuelTrack Groupe 1](https://fueltrackgroupe1.byethost16.com)
 
-Ce lien vous permet d’accéder directement à la partie frontend de l’application.
+Ce lien vous permet d’accéder directement à la partie frontend de l’application
 
-### Lien d’accès au backend
+### Lien d’accès au backend 
 
-Le backend de l’application est exécuté en local via le serveur PHP intégré.
+Le backend de l’application est exécuté en local via le serveur PHP intégré
 
-📁 Chemin du projet :cd  \backend\public"  php -S localhost:8000
+Chemin du projet :cd  \backend\public"  php -S localhost:8000 
