@@ -4,7 +4,7 @@
 
 ### 1.1 Intitulé
 
-FuelTrack - Système de gestion des approvisionnements, stocks, livraisons et ventes de carburant.
+FuelTrack - Système de gestion des approvisionnements, stocks, livraisons et ventes de carburant dans la province du Nord-Kivu.
 
 ### 1.2 Contexte
 
@@ -39,9 +39,9 @@ Le projet vise à informatiser et fiabiliser la gestion opérationnelle d'un ré
 
 ## 3. Parties prenantes
 
-- Maîtrise d'ouvrage: responsables opérationnels du réseau carburant
-- Utilisateurs finaux: administrateur, gestionnaire de stock, responsable logistique, responsable station, superviseur
-- Équipe technique: développement frontend/backend, base de données, tests
+- Maîtrise d'ouvrage : responsables opérationnels du réseau carburant
+- Utilisateurs finaux : administrateur, gestionnaire de stock, responsable logistique, responsable station, superviseur
+- Équipe technique : développement frontend/backend, base de données, tests
 
 ## 4. Exigences fonctionnelles majeures
 
@@ -63,11 +63,11 @@ Le projet vise à informatiser et fiabiliser la gestion opérationnelle d'un ré
 
 ## 6. Contraintes techniques
 
-- Backend: PHP 8.x
-- Base de données: MySQL/MariaDB
-- Frontend: HTML/CSS/JavaScript (vanilla)
-- API: REST JSON
-- Exécution locale: serveur PHP + frontend statique (dev local)
+- Backend : PHP 8.x
+- Base de données : MySQL/MariaDB
+- Frontend : HTML/CSS/JavaScript (vanilla)
+- API : REST JSON
+- Exécution locale : serveur PHP + frontend statique (dev local)
 
 ## 7. Architecture fonctionnelle synthétique
 
@@ -75,8 +75,8 @@ Le projet vise à informatiser et fiabiliser la gestion opérationnelle d'un ré
 
 - rôles, utilisateurs
 - référentiels métier
-- transactions: approvisionnements, livraisons, mouvements, ventes
-- stocks: dépôts/stations
+- transactions : approvisionnements, livraisons, mouvements, ventes
+- stocks : dépôts/stations
 - alertes et rapports
 
 ### 7.2 Règles de flux
