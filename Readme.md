@@ -79,9 +79,9 @@ Examen_GL/
 
 ## Notes de mise a jour
 
-- Le dossier `backend/tests/` a ete supprime (fichiers de tests non necessaires a l'execution).
-- Les documents de projet ont ete completes dans `documentation/`.
-- La structure ci-dessus reflete l'etat actuel du depot.
+- Le dossier `backend/tests/` a ete supprime (fichiers de tests non necessaires a l'execution)
+- Les documents de projet ont ete completes dans `documentation/`
+- La structure ci-dessus reflete l'etat actuel du depot
 
 # Documentation du Schéma de Base de Données  
 <img width="1714" height="1296" alt="fueltrack_nord_kivu" src="https://github.com/user-attachments/assets/9e83117c-75d6-4a49-bf18-13303438f5c0" />
@@ -216,10 +216,10 @@ Dépôt : Station
 ## 8. Gestion des stocks
 
 ### Table : `stocks_depots`
-Stock dans les dépôts.
+Stock dans les dépôts
 
 ### Table : `stocks_stations`
-Stock dans les stations.
+Stock dans les stations
 
 **Champs communs :**
 - `type_carburant_id`
@@ -250,10 +250,10 @@ Historique des opérations.
 ## 10. Prix et taux de change
 
 ### Table : `prix_carburants`
-Prix par station.
+Prix par station
 
 ### Table : `taux_change_stations`
-Taux USD ↔ CDF.
+Taux USD ↔ CDF
 
 ---
 
