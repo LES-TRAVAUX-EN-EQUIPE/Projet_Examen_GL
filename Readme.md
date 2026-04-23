@@ -257,7 +257,7 @@ Taux USD ↔ CDF
 
 ---
 
-## 11. Ventes
+## 11. Ventes 
 
 ### Table : `ventes_station`
 
@@ -278,11 +278,11 @@ Représente les ventes aux clients.
 - `date_vente`
 
 ### Flux :
-Station : Client
+Station : Client 
 
 ----
 
-## 12. Clients
+## 12. Clients 
 
 ### Table : `clients`
 
@@ -395,9 +395,9 @@ Voici le lien d’accès à notre application qui est heberge sur internet :
 
 Ce lien vous permet d’accéder directement à la partie frontend de l’application déjà hébergée sur bythost.com qui est l'hébergeur que nous avons choisi .
 
-### Lien d’accès au backend 
+### Lien d’accès au backend
 
 Le backend de l’application est exécuté en local via le serveur PHP intégré
-Et le front est ouvert dans le navigateur avec le click droit dans le fichier index.html qui est dans le dossier frontend puis ouvrir avec live server si l'extension est installée , puis ca s'ouvre en local sur le http://localhost:5500 .
+Et le front est ouvert dans le navigateur avec le click droit dans le fichier index.html qui est dans le dossier frontend puis ouvrir avec live server si l'extension est installée , puis ca s'ouvre en local sur le http://localhost:5500.
 
 Chemin du projet :cd  \backend\public"  php -S localhost:8000 
