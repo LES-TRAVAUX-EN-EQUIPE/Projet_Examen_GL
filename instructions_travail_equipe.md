@@ -7,7 +7,7 @@
 <img width="1365" height="767" alt="invitation_owner" src="https://github.com/user-attachments/assets/2a90bbf3-cbfa-4e6e-bfd8-fd73b6841c58" />
 <img width="1365" height="721" alt="invitation_envoyee" src="https://github.com/user-attachments/assets/210c9189-4b60-469e-9798-0b5023c63507" />
 <img width="1365" height="767" alt="10_Contibuteur_Examen" src="https://github.com/user-attachments/assets/495e08bf-1210-4c5a-bfb9-5f33cc8a6064" />
-
+<img width="1365" height="767" alt="Liste_de_presence" src="https://github.com/user-attachments/assets/2dda0955-7944-40a4-9abd-6caf6e38896f" />
 
 # Instructions de travail en equipe - Projet Examen GL (FuelTrack)
 
