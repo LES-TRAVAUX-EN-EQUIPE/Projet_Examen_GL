@@ -2134,8 +2134,25 @@ try {
             reponseErreur('Paramètre id requis pour la suppression.', 400);
         }
 
+        if ($entity === 'clients') {
+            $stmtDependances = $pdo->prepare('SELECT COUNT(*) FROM ventes_station WHERE client_id = :id');
+            $stmtDependances->execute(['id' => $id]);
+
+            if ((int) $stmtDependances->fetchColumn() > 0) {
+                reponseErreur('Ce client est lié à une ou plusieurs ventes et ne peut pas être supprimé.', 409);
+            }
+        }
+
         $stmt = $pdo->prepare("DELETE FROM {$table} WHERE id = :id");
-        $stmt->execute(['id' => $id]);
+        try {
+            $stmt->execute(['id' => $id]);
+        } catch (PDOException $e) {
+            if ($entity === 'clients' && $e->getCode() === '23000') {
+                reponseErreur('Ce client est lié à une ou plusieurs ventes et ne peut pas être supprimé.', 409);
+            }
+
+            throw $e;
+        }
         reponseSucces(['id' => $id], 'Suppression réussie.');
     }
 
