@@ -3,7 +3,11 @@
 <img width="1365" height="767" alt="issue_02" src="https://github.com/user-attachments/assets/76ed363e-5b2d-4b9d-b5ad-77680b226d17" />
 <img width="1365" height="767" alt="issue_01" src="https://github.com/user-attachments/assets/659fec9a-f64c-419a-abfd-95d4d6774c27" />
 <img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/6bb7e33a-ddfc-4497-82fa-db1ebe5734b4" />
-<img width="1365" height="765" alt="image" src="https://github.com/user-attachments/assets/f7c652b3-7c7e-4218-8c99-9dd3ed39c5d6" />
+<img width="1365" height="767" alt="invitation_prof" src="https://github.com/user-attachments/assets/eef7fc28-3c39-4d1f-989d-8a4330769cc2" />
+<img width="1365" height="767" alt="invitation_owner" src="https://github.com/user-attachments/assets/2a90bbf3-cbfa-4e6e-bfd8-fd73b6841c58" />
+<img width="1365" height="721" alt="invitation_envoyee" src="https://github.com/user-attachments/assets/210c9189-4b60-469e-9798-0b5023c63507" />
+<img width="1365" height="767" alt="10_Contibuteur_Examen" src="https://github.com/user-attachments/assets/495e08bf-1210-4c5a-bfb9-5f33cc8a6064" />
+<img width="1365" height="767" alt="Liste_de_presence" src="https://github.com/user-attachments/assets/2dda0955-7944-40a4-9abd-6caf6e38896f" />
 
 # Instructions de travail en equipe - Projet Examen GL (FuelTrack)
 
@@ -58,13 +62,13 @@ Note: cette repartition reprend la liste fournie dans le suivi GitHub de l'equip
 
 Une grande partie de la logique metier active est actuellement concentree dans backend/public/api/index.php:
 
-- Authentification (entity auth).
-- Dashboard (entity dashboard).
-- Rapports (entity rapports).
-- Approvisionnements et livraisons avec impact automatique sur stocks.
-- Alertes automatiques selon seuils de stock.
-- Ajustements de stock depots/stations.
-- Gestion des permissions par role via en-tetes X-Role-Id et X-User-Id.
+- Authentification (entity auth)
+- Dashboard (entity dashboard)
+- Rapports (entity rapports)
+- Approvisionnements et livraisons avec impact automatique sur stocks
+- Alertes automatiques selon seuils de stock
+- Ajustements de stock depots/stations
+- Gestion des permissions par role via en-tetes X-Role-Id et X-User-Id
 
 Cela confirme directement les issues #15, #14, #13, #11, #8 et #7 en termes d'implementation fonctionnelle.
 
@@ -78,7 +82,7 @@ Les scripts frontend valident l'integration des modules assignees:
 - stations.js -> CRUD stations + ajustements de stock station.
 - vehicules.js -> CRUD vehicules.
 - connexion.js + api_client.js -> login, session, appels API.
-- tableau_de_bord.js -> KPI, tableaux et graphiques du dashboard.
+- tableau_de_bord.js -> KPI, tableaux et graphiques du dashboard
 
 Cette organisation est coherente avec la logique issue-based adoptee par l'equipe.
 
@@ -86,12 +90,12 @@ Cette organisation est coherente avec la logique issue-based adoptee par l'equip
 
 Pour chaque issue, l'equipe a applique le flux suivant:
 
-1. Clarification du besoin et des criteres de sortie.
-2. Identification des fichiers frontend/backend/BD impactes.
-3. Implementation du module par le membre assigne.
+1. Clarification du besoin et des criteres de sortie
+2. Identification des fichiers frontend/backend/BD impactes
+3. Implementation du module par le membre assigne
 4. Tests manuels des cas principaux (creation, lecture, modification, suppression, erreurs).
-5. Verification croisee par un autre membre de l'equipe.
-6. Integration dans le depot principal apres validation.
+5. Verification croisee par un autre membre de l'equipe
+6. Integration dans le depot principal apres validation
 
 ## 6. Regles d'organisation d'equipe
 

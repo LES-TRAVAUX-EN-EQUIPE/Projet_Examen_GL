@@ -79,9 +79,9 @@ Examen_GL/
 
 ## Notes de mise a jour
 
-- Le dossier `backend/tests/` a ete supprime (fichiers de tests non necessaires a l'execution).
-- Les documents de projet ont ete completes dans `documentation/`.
-- La structure ci-dessus reflete l'etat actuel du depot.
+- Le dossier `backend/tests/` a ete supprime (fichiers de tests non necessaires a l'execution)
+- Les documents de projet ont ete completes dans `documentation/`
+- La structure ci-dessus reflete l'etat actuel du depot
 
 # Documentation du Schéma de Base de Données  
 <img width="1714" height="1296" alt="fueltrack_nord_kivu" src="https://github.com/user-attachments/assets/9e83117c-75d6-4a49-bf18-13303438f5c0" />
@@ -216,10 +216,10 @@ Dépôt : Station
 ## 8. Gestion des stocks
 
 ### Table : `stocks_depots`
-Stock dans les dépôts.
+Stock dans les dépôts
 
 ### Table : `stocks_stations`
-Stock dans les stations.
+Stock dans les stations
 
 **Champs communs :**
 - `type_carburant_id`
@@ -250,14 +250,14 @@ Historique des opérations.
 ## 10. Prix et taux de change
 
 ### Table : `prix_carburants`
-Prix par station.
+Prix par station
 
 ### Table : `taux_change_stations`
-Taux USD ↔ CDF.
+Taux USD ↔ CDF
 
 ---
 
-## 11. Ventes
+## 11. Ventes 
 
 ### Table : `ventes_station`
 
@@ -278,11 +278,11 @@ Représente les ventes aux clients.
 - `date_vente`
 
 ### Flux :
-Station : Client
+Station : Client 
 
----
+----
 
-## 12. Clients
+## 12. Clients 
 
 ### Table : `clients`
 
@@ -293,7 +293,7 @@ Station : Client
 - `email`
 - `adresse`
 
----
+----
 
 ## 13. Fournisseurs
 
@@ -308,7 +308,7 @@ Station : Client
 - `email`
 - `adresse`
 
----
+----
 
 ## 14. Alertes
 
@@ -325,7 +325,7 @@ Permet de gérer les alertes.
 - `depot_id`
 - `statut`
 
----
+----
 
 ## 15. Utilisateurs et rôles
 
@@ -346,7 +346,7 @@ Permet de gérer les alertes.
 - `nom_role`
 - `description_role`
 
----
+----
 
 ## 16. Relations principales
 
@@ -393,10 +393,11 @@ Voici le lien d’accès à notre application qui est heberge sur internet :
 
 [FuelTrack Groupe 1](https://fueltrackgroupe1.byethost16.com)
 
-Ce lien vous permet d’accéder directement à la partie frontend de l’application
+Ce lien vous permet d’accéder directement à la partie frontend de l’application déjà hébergée sur bythost.com qui est l'hébergeur que nous avons choisi .
 
-### Lien d’accès au backend 
+### Lien d’accès au backend
 
 Le backend de l’application est exécuté en local via le serveur PHP intégré
+Et le front est ouvert dans le navigateur avec le click droit dans le fichier index.html qui est dans le dossier frontend puis ouvrir avec live server si l'extension est installée , puis ca s'ouvre en local sur le http://localhost:5500.
 
 Chemin du projet :cd  \backend\public"  php -S localhost:8000 
