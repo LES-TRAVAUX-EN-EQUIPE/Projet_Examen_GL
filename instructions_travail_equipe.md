@@ -3,7 +3,9 @@
 <img width="1365" height="767" alt="issue_02" src="https://github.com/user-attachments/assets/76ed363e-5b2d-4b9d-b5ad-77680b226d17" />
 <img width="1365" height="767" alt="issue_01" src="https://github.com/user-attachments/assets/659fec9a-f64c-419a-abfd-95d4d6774c27" />
 <img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/6bb7e33a-ddfc-4497-82fa-db1ebe5734b4" />
-<img width="1365" height="765" alt="image" src="https://github.com/user-attachments/assets/f7c652b3-7c7e-4218-8c99-9dd3ed39c5d6" />
+<img width="1365" height="767" alt="invitation_prof" src="https://github.com/user-attachments/assets/eef7fc28-3c39-4d1f-989d-8a4330769cc2" />
+<img width="1365" height="767" alt="invitation_owner" src="https://github.com/user-attachments/assets/2a90bbf3-cbfa-4e6e-bfd8-fd73b6841c58" />
+<img width="1365" height="721" alt="invitation_envoyee" src="https://github.com/user-attachments/assets/210c9189-4b60-469e-9798-0b5023c63507" />
 
 # Instructions de travail en equipe - Projet Examen GL (FuelTrack)
 
