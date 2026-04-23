@@ -6,9 +6,9 @@
 Systeme de gestion des approvisionnements, stocks, livraisons et ventes de carburant  
 Province du Nord-Kivu
 
-- Equipe: LES-TRAVAUX-EN-EQUIPE
-- Cours: Examen GL
-- Date: Avril 2026
+- Equipe : LES-TRAVAUX-EN-EQUIPE
+- Cours : Examen Genie Logiciel
+- Date : Avril 2026
 
 ---
 
