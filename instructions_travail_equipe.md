@@ -6,6 +6,7 @@
 <img width="1365" height="767" alt="invitation_prof" src="https://github.com/user-attachments/assets/eef7fc28-3c39-4d1f-989d-8a4330769cc2" />
 <img width="1365" height="767" alt="invitation_owner" src="https://github.com/user-attachments/assets/2a90bbf3-cbfa-4e6e-bfd8-fd73b6841c58" />
 <img width="1365" height="721" alt="invitation_envoyee" src="https://github.com/user-attachments/assets/210c9189-4b60-469e-9798-0b5023c63507" />
+<img width="1365" height="721" alt="invitation_envoyee" src="https://github.com/user-attachments/assets/1fd5dac6-341d-4d11-84f2-2c7aabfb13a1" />
 
 # Instructions de travail en equipe - Projet Examen GL (FuelTrack)
 
