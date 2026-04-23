@@ -58,13 +58,13 @@ Note: cette repartition reprend la liste fournie dans le suivi GitHub de l'equip
 
 Une grande partie de la logique metier active est actuellement concentree dans backend/public/api/index.php:
 
-- Authentification (entity auth).
-- Dashboard (entity dashboard).
-- Rapports (entity rapports).
-- Approvisionnements et livraisons avec impact automatique sur stocks.
-- Alertes automatiques selon seuils de stock.
-- Ajustements de stock depots/stations.
-- Gestion des permissions par role via en-tetes X-Role-Id et X-User-Id.
+- Authentification (entity auth)
+- Dashboard (entity dashboard)
+- Rapports (entity rapports)
+- Approvisionnements et livraisons avec impact automatique sur stocks
+- Alertes automatiques selon seuils de stock
+- Ajustements de stock depots/stations
+- Gestion des permissions par role via en-tetes X-Role-Id et X-User-Id
 
 Cela confirme directement les issues #15, #14, #13, #11, #8 et #7 en termes d'implementation fonctionnelle.
 
