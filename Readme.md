@@ -280,7 +280,7 @@ Représente les ventes aux clients.
 ### Flux :
 Station : Client
 
----
+----
 
 ## 12. Clients
 
@@ -293,7 +293,7 @@ Station : Client
 - `email`
 - `adresse`
 
----
+----
 
 ## 13. Fournisseurs
 
@@ -308,7 +308,7 @@ Station : Client
 - `email`
 - `adresse`
 
----
+----
 
 ## 14. Alertes
 
@@ -325,7 +325,7 @@ Permet de gérer les alertes.
 - `depot_id`
 - `statut`
 
----
+----
 
 ## 15. Utilisateurs et rôles
 
@@ -346,7 +346,7 @@ Permet de gérer les alertes.
 - `nom_role`
 - `description_role`
 
----
+----
 
 ## 16. Relations principales
 
