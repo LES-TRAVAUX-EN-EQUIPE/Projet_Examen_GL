@@ -80,7 +80,7 @@ Les scripts frontend valident l'integration des modules assignees:
 - stations.js -> CRUD stations + ajustements de stock station.
 - vehicules.js -> CRUD vehicules.
 - connexion.js + api_client.js -> login, session, appels API.
-- tableau_de_bord.js -> KPI, tableaux et graphiques du dashboard.
+- tableau_de_bord.js -> KPI, tableaux et graphiques du dashboard
 
 Cette organisation est coherente avec la logique issue-based adoptee par l'equipe.
 
@@ -88,12 +88,12 @@ Cette organisation est coherente avec la logique issue-based adoptee par l'equip
 
 Pour chaque issue, l'equipe a applique le flux suivant:
 
-1. Clarification du besoin et des criteres de sortie.
-2. Identification des fichiers frontend/backend/BD impactes.
-3. Implementation du module par le membre assigne.
+1. Clarification du besoin et des criteres de sortie
+2. Identification des fichiers frontend/backend/BD impactes
+3. Implementation du module par le membre assigne
 4. Tests manuels des cas principaux (creation, lecture, modification, suppression, erreurs).
-5. Verification croisee par un autre membre de l'equipe.
-6. Integration dans le depot principal apres validation.
+5. Verification croisee par un autre membre de l'equipe
+6. Integration dans le depot principal apres validation
 
 ## 6. Regles d'organisation d'equipe
 
